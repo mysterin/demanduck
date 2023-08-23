@@ -1,12 +1,12 @@
 server:
-  port: 8047
+  port: ${SERVER_PORT:8047}
   servlet:
     context-path: /
 spring:
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/demanduck?useSSL=false
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/demanduck?useSSL=false}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
     driver-class-name: com.mysql.jdbc.Driver
 logging:
   level:
