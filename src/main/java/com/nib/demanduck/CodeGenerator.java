@@ -32,7 +32,8 @@ public class CodeGenerator {
                 .strategyConfig(builder -> {
                     builder
                             // 表名
-                            .addInclude("nib_user")
+                            .addInclude(
+                                    "nib_user")
                             // 前缀
                             .addTablePrefix("nib_")
 

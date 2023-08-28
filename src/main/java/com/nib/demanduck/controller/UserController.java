@@ -1,11 +1,18 @@
 package com.nib.demanduck.controller;
 
+import com.nib.demanduck.api.request.CreateUserRequest;
+import com.nib.demanduck.api.request.LoginUserRequest;
+import com.nib.demanduck.api.response.LoginUserData;
+import com.nib.demanduck.api.response.Response;
 import com.nib.demanduck.entity.User;
+import com.nib.demanduck.exception.ServiceException;
 import com.nib.demanduck.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,26 +32,29 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/get")
-    public User get(Long id) {
-        User user = userService.getById(id);
-        return user;
-    }
-
-    @RequestMapping("/delete")
-    public Boolean delete(Long id) {
-        return userService.removeById(id);
-    }
-
-    @RequestMapping("/create")
-    public User create() {
+    /**
+     * 创建用户
+     * @param request
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/register")
+    public Response register(@RequestBody @Validated CreateUserRequest request) throws ServiceException {
         User user = new User();
-        user.setUserName(RandomStringUtils.randomAlphabetic(5));
-        user.setMobile(RandomStringUtils.randomNumeric(11));
-        user.setEmail(RandomStringUtils.randomAlphabetic(8) + "@nib.com");
-        user.setPassword(DigestUtils.md5Hex(DigestUtils.sha1Hex(RandomStringUtils.randomAlphabetic(8))));
-        userService.save(user);
-        return user;
+        BeanUtils.copyProperties(request, user);
+        userService.register(user);
+        return Response.success();
     }
 
+    /**
+     * 登录
+     * @param request
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/login")
+    public Response<User> login(@RequestBody @Validated LoginUserRequest request) throws ServiceException {
+        LoginUserData loginUserData = userService.login(request.getEmail(), request.getPassword());
+        return Response.success(loginUserData);
+    }
 }

@@ -6,63 +6,61 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 用户表
+ * 分配用户表
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-28 07:52:25
+ * @since 2023-08-28 05:30:36
  */
 @Getter
 @Setter
-@TableName("nib_user")
-public class User implements Serializable {
+@TableName("nib_assign_user")
+public class AssignUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键 ID
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+      @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 用户名称
+     * 公司 ID
      */
-    @TableField("username")
-    private String username;
+    @TableField("company_id")
+    private Long companyId;
 
     /**
-     * 手机号
+     * 项目 ID
      */
-    @TableField("mobile")
-    private String mobile;
+    @TableField("project_id")
+    private Long projectId;
 
     /**
-     * 邮箱
+     * 业务记录 ID
      */
-    @TableField("email")
-    private String email;
+    @TableField("business_id")
+    private Long businessId;
 
     /**
-     * 密码
+     * 业务类型, DEMAND=需求, MISSION=任务, FLAW=缺陷
      */
-    @TableField("password")
-    private String password;
+    @TableField("type")
+    private String type;
 
     /**
-     * 盐值
+     * 指派用户 ID
      */
-    @TableField("salt")
-    private String salt;
+    @TableField("user_id")
+    private Long userId;
 
     /**
      * 是否删除，0=未删除，1=已删除
@@ -72,14 +70,26 @@ public class User implements Serializable {
     private Byte deleted;
 
     /**
+     * 创建人
+     */
+    @TableField("create_user")
+    private Long createUser;
+
+    /**
+     * 更新人
+     */
+    @TableField("update_user")
+    private Long updateUser;
+
+    /**
      * 创建时间
      */
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+      @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+      @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 }
