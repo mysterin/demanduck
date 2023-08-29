@@ -1,6 +1,7 @@
 package com.nib.demanduck.config;
 
 import com.nib.demanduck.interceptor.UserPermissionInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,9 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebAppConfigurer implements WebMvcConfigurer {
+
+    @Autowired
+    private UserPermissionInterceptor userPermissionInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new UserPermissionInterceptor())
+        registry.addInterceptor(userPermissionInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/login", "/user/register");
     }

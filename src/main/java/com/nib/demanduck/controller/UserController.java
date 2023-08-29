@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -33,7 +30,7 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 创建用户
+     * 注册
      * @param request
      * @return
      * @throws ServiceException
@@ -56,5 +53,16 @@ public class UserController {
     public Response<User> login(@RequestBody @Validated LoginUserRequest request) throws ServiceException {
         LoginUserData loginUserData = userService.login(request.getEmail(), request.getPassword());
         return Response.success(loginUserData);
+    }
+
+    /**
+     * 退出登录
+     * @param token
+     * @return
+     */
+    @PostMapping("/logout")
+    public Response logout(@RequestHeader("Token") String token) {
+        userService.logout(token);
+        return Response.success();
     }
 }

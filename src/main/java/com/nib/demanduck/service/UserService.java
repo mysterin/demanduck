@@ -17,4 +17,8 @@ public interface UserService extends IService<User> {
     void register(User user) throws ServiceException;
 
     LoginUserData login(String email, String password) throws ServiceException;
+
+    User getByToken(String token);
+
+    void logout(String token);
 }

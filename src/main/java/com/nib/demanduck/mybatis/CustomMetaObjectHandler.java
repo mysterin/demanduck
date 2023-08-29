@@ -1,6 +1,7 @@
 package com.nib.demanduck.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.nib.demanduck.util.ThreadLocalUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,13 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         strictInsertFill(metaObject, "createTime", () -> LocalDateTime.now(), LocalDateTime.class);
         strictInsertFill(metaObject, "updateTime", () -> LocalDateTime.now(), LocalDateTime.class);
+        strictInsertFill(metaObject, "createUser", () -> ThreadLocalUtils.getUserId(), Long.class);
+        strictInsertFill(metaObject, "updateUser", () -> ThreadLocalUtils.getUserId(), Long.class);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         strictInsertFill(metaObject, "updateTime", () -> LocalDateTime.now(), LocalDateTime.class);
+        strictInsertFill(metaObject, "updateUser", () -> ThreadLocalUtils.getUserId(), Long.class);
     }
 }

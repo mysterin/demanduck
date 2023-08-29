@@ -1,5 +1,7 @@
 package com.nib.demanduck.annotation;
 
+import com.nib.demanduck.constant.UserRoleEnum;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,4 +14,5 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 public @interface UserPermission {
+    UserRoleEnum value();
 }

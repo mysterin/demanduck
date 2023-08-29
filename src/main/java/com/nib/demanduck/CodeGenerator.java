@@ -33,7 +33,16 @@ public class CodeGenerator {
                     builder
                             // 表名
                             .addInclude(
-                                    "nib_user")
+                                    "nib_assign_user",
+                                    "nib_comment",
+                                    "nib_company",
+                                    "nib_content",
+                                    "nib_demand",
+                                    "nib_flaw",
+                                    "nib_mission",
+                                    "nib_project",
+                                    "nib_user",
+                                    "nib_user_role")
                             // 前缀
                             .addTablePrefix("nib_")
 
@@ -42,6 +51,8 @@ public class CodeGenerator {
                             .idType(IdType.ASSIGN_ID)
                             .addTableFills(new Column("create_time", FieldFill.INSERT))
                             .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
+                            .addTableFills(new Column("create_user", FieldFill.INSERT))
+                            .addTableFills(new Column("update_user", FieldFill.INSERT_UPDATE))
                             .enableTableFieldAnnotation()
                             .enableLombok()
                             .enableFileOverride()

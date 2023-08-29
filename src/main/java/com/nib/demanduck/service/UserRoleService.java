@@ -1,7 +1,11 @@
 package com.nib.demanduck.service;
 
+import com.nib.demanduck.constant.UserRoleEnum;
 import com.nib.demanduck.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.nib.demanduck.exception.ServiceException;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserRoleService extends IService<UserRole> {
 
+    List<UserRole> listUserRole(Long companyId, Long projectId, Long userId);
+
+    Boolean hasPermission(Long companyId, Long projectId, Long userId, UserRoleEnum userRoleEnum);
+
+    void saveUserRole(UserRole userRole);
 }

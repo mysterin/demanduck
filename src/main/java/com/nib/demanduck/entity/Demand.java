@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-28 05:30:36
+ * @since 2023-08-29 06:21:42
  */
 @Getter
 @Setter
@@ -84,13 +84,13 @@ public class Demand implements Serializable {
     /**
      * 创建人
      */
-    @TableField("create_user")
+      @TableField(value = "create_user", fill = FieldFill.INSERT)
     private Long createUser;
 
     /**
      * 更新人
      */
-    @TableField("update_user")
+      @TableField(value = "update_user", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 
     /**

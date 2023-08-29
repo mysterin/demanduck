@@ -76,6 +76,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 根据 token 获取用户
+     * @param token
+     * @return
+     */
+    @Override
+    public User getByToken(String token) {
+        String key = MessageFormat.format(USER_SESSION_KEY, token);
+        Long userId = redisUtils.get(key, Long.class);
+        if (userId == null) {
+            return null;
+        }
+        User user = baseMapper.selectById(userId);
+        return user;
+    }
+
+    /**
+     * 退出登录
+     * @param token
+     */
+    @Override
+    public void logout(String token) {
+        String key = MessageFormat.format(USER_SESSION_KEY, token);
+        redisUtils.del(key);
+    }
+
+    /**
      * 根据手机号或邮箱获取用户
      * @param mobile
      * @param email

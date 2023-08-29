@@ -6,10 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-28 07:52:25
+ * @since 2023-08-29 06:21:42
  */
 @Getter
 @Setter
@@ -31,7 +29,7 @@ public class User implements Serializable {
     /**
      * 主键 ID
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+      @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -74,12 +72,12 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+      @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+      @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 }

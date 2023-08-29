@@ -153,7 +153,7 @@ public class RedisUtils {
      * 删除缓存
      * @param key
      */
-    public void delete(String key) {
+    public void del(String key) {
         redisTemplate.delete(key);
     }
 

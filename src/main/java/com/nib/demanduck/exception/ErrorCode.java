@@ -18,6 +18,7 @@ public enum ErrorCode {
     USER_NOT_EXIST(1006, "用户不存在"),
     PASSWORD_ERROR(1007, "密码错误"),
     USER_NOT_LOGIN(1008, "用户未登录"),
+    USER_PERMISSION_ERROR(1009, "用户无权限"),
     ;
     private Integer code;
     private String msg;
