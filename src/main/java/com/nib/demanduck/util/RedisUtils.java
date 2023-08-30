@@ -1,12 +1,14 @@
 package com.nib.demanduck.util;
 
 import com.alibaba.fastjson2.JSON;
+import com.nib.demanduck.constant.RedisKeyConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Supplier;
@@ -154,6 +156,11 @@ public class RedisUtils {
      * @param key
      */
     public void del(String key) {
+        redisTemplate.delete(key);
+    }
+
+    public void del(String key, Map<String, Object> map) {
+        key = RedisKeyConstant.getKey(key, map);
         redisTemplate.delete(key);
     }
 

@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CompanyService extends IService<Company> {
 
+    void saveCompany(Company company);
+    void deleteCompany(Long companyId);
 }

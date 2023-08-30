@@ -29,7 +29,7 @@ java -jar demanduck-0.0.1-SNAPSHOT.jar --spring.port=8047
 
 | 参数 | 说明 | 默认值                                                |
 | --- | --- |----------------------------------------------------|
-| server.port | 服务端口 | 8047                                               |
+| server.port | 服务端口 | 8045                                               |
 | spring.datasource.url | 数据库地址 | jdbc:mysql://localhost:3306/demanduck?useSSL=false |
 | spring.datasource.username | 数据库用户名 | root                                               |
 | spring.datasource.password | 数据库密码 | root                                               |

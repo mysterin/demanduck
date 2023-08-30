@@ -3,6 +3,8 @@ package com.nib.demanduck.service;
 import com.nib.demanduck.entity.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 项目表 服务类
@@ -13,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProjectService extends IService<Project> {
 
+    Long getCompanyIdById(Long projectId);
+    List<Project> listProjectByCompanyId(Long companyId);
 }

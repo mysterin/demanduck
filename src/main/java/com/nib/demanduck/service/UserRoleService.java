@@ -16,10 +16,12 @@ import java.util.List;
  * @since 2023-08-28 05:30:36
  */
 public interface UserRoleService extends IService<UserRole> {
+    UserRole getByUserIdAndBusinessId(Long userId, Long businessId);
 
     List<UserRole> listUserRole(Long companyId, Long projectId, Long userId);
 
     Boolean hasPermission(Long companyId, Long projectId, Long userId, UserRoleEnum userRoleEnum);
 
     void saveUserRole(UserRole userRole);
+    void deleteUserRole(Long userRoleId);
 }

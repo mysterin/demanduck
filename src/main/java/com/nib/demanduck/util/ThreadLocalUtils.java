@@ -23,5 +23,6 @@ public class ThreadLocalUtils {
     public static void removeUserId() {
         userIdThreadLocal.remove();
     }
+
 }
 

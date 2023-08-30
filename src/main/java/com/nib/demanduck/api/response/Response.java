@@ -33,6 +33,10 @@ public class Response<T> {
                 .setData(data);
     }
 
+    public static Response error() {
+        return error(ErrorCode.SYSTEM_ERROR);
+    }
+
     public static Response error(ErrorCode errorCode) {
         return new Response().setCode(errorCode.getCode()).setMsg(errorCode.getMsg());
     }

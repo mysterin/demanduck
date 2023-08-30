@@ -43,4 +43,9 @@ public class GlobalExceptionAdvice {
     public Response serviceException(ServiceException e) {
         return Response.error(e.getErrorCode());
     }
+
+    @ExceptionHandler(Exception.class)
+    public Response exception(Exception e) {
+        return Response.error(ErrorCode.SYSTEM_ERROR);
+    }
 }

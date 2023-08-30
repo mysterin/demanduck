@@ -2,7 +2,7 @@ package com.nib.demanduck.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nib.demanduck.api.response.LoginUserData;
-import com.nib.demanduck.constant.RedisTTL;
+import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.entity.User;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.exception.ServiceException;
@@ -69,7 +69,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 生成 UUID 表示 token
         String token = UUID.randomUUID().toString().replace("-", "");
         String key = MessageFormat.format(USER_SESSION_KEY, token);
-        redisUtils.set(key, user.getId(), RedisTTL.ONE_WEEK);
+        redisUtils.set(key, user.getId(), RedisConstant.ONE_WEEK);
         LoginUserData loginUserData = new LoginUserData();
         BeanUtils.copyProperties(user, loginUserData);
         loginUserData.setToken(token);

@@ -27,20 +27,14 @@ import java.io.PrintWriter;
  */
 @Slf4j
 @Component
-public class UserPermissionInterceptor implements HandlerInterceptor {
+public class UserLoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRoleService userRoleService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("Token");
-        String companyIdStr = request.getHeader("Company-Id");
-        String projectIdStr = request.getHeader("Project-Id");
-        Long companyId = StringUtils.isBlank(companyIdStr) ? null : Long.valueOf(companyIdStr);
-        Long projectId = StringUtils.isBlank(projectIdStr) ? null : Long.valueOf(projectIdStr);
         if (StringUtils.isBlank(token)) {
             errorResponse(response, ErrorCode.USER_NOT_LOGIN);
             return false;
@@ -51,26 +45,14 @@ public class UserPermissionInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // 用户权限
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            UserPermission userPermission = handlerMethod.getMethodAnnotation(UserPermission.class);
-            if (userPermission != null) {
-                if (!userRoleService.hasPermission(companyId, projectId, user.getId(), userPermission.value())) {
-                    errorResponse(response, ErrorCode.USER_PERMISSION_ERROR);
-                    return false;
-                }
-            }
-        }
-
-        // 设置线程变量 userId
+        // 设置线程变量
         ThreadLocalUtils.setUserId(user.getId());
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        // 清除线程变量 userId
+        // 清除线程变量
         ThreadLocalUtils.removeUserId();
     }
 

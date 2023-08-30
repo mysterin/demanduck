@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     SUCCESS(0, "成功"),
+    SYSTEM_ERROR(1000, "系统错误"),
     INVALID_PARAM(1001, "参数错误"),
     INVALID_TOKEN(1002, "无效的 token"),
     INVALID_USER(1003, "无效的用户"),
