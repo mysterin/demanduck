@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class CustomMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
+        strictInsertFill(metaObject, "deleted", () -> Byte.valueOf("0"), Byte.class);
         strictInsertFill(metaObject, "createTime", () -> LocalDateTime.now(), LocalDateTime.class);
         strictInsertFill(metaObject, "updateTime", () -> LocalDateTime.now(), LocalDateTime.class);
         strictInsertFill(metaObject, "createUser", () -> ThreadLocalUtils.getUserId(), Long.class);

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.UUID;
 
 /**
  * <p>
@@ -65,8 +66,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!StringUtils.equals(sha1Hex, user.getPassword())) {
             throw new ServiceException(ErrorCode.PASSWORD_ERROR);
         }
-        // 生成 token，保存到 redis 中
-        String token = RandomStringUtils.randomAlphanumeric(20);
+        // 生成 UUID 表示 token
+        String token = UUID.randomUUID().toString().replace("-", "");
         String key = MessageFormat.format(USER_SESSION_KEY, token);
         redisUtils.set(key, user.getId(), RedisTTL.ONE_WEEK);
         LoginUserData loginUserData = new LoginUserData();

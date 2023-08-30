@@ -1,5 +1,5 @@
 server:
-  port: 8047
+  port: 8045
   servlet:
     context-path: /
 spring:
@@ -18,6 +18,8 @@ spring:
         max-idle: 10
         min-idle: 0
       timeout: 10000
+  jackson:
+    default-property-inclusion: non_null
 logging:
   level:
     root: info

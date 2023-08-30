@@ -49,6 +49,7 @@ public class CodeGenerator {
                             // 实体
                             .entityBuilder()
                             .idType(IdType.ASSIGN_ID)
+                            .addTableFills(new Column("deleted", FieldFill.INSERT))
                             .addTableFills(new Column("create_time", FieldFill.INSERT))
                             .addTableFills(new Column("update_time", FieldFill.INSERT_UPDATE))
                             .addTableFills(new Column("create_user", FieldFill.INSERT))

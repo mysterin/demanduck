@@ -2,9 +2,11 @@ package com.nib.demanduck;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-class DemanduckApplicationTests {
+@ActiveProfiles("dev")
+public class DemanduckApplicationTests {
 
     @Test
     void contextLoads() {
