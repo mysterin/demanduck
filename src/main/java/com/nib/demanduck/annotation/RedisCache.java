@@ -25,4 +25,17 @@ public @interface RedisCache {
      * @return
      */
     String type() default "STRING";
+
+    /**
+     * 对应缓存索引属性名
+     * @return
+     */
+    String[] indexNames() default {};
+
+    /**
+     * 返回 list 类型时，指定 list 中的类型
+     * @return
+     */
+    Class returnListType() default Object.class;
+
 }

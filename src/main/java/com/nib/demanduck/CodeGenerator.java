@@ -17,7 +17,7 @@ public class CodeGenerator {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/demanduck?useUnicode=true&characterEncoding=utf8", username, password)
                 .globalConfig(builder -> {
                     builder.author("linxiaobin")
-                            .commentDate("yyyy-MM-dd hh:mm:ss")
+                            .commentDate("yyyy-MM-dd")
                             .fileOverride()
                             .outputDir("src/main/java")
                             .disableOpenDir();
@@ -42,7 +42,7 @@ public class CodeGenerator {
                                     "nib_mission",
                                     "nib_project",
                                     "nib_user",
-                                    "nib_user_role")
+                                    "nib_role")
                             // 前缀
                             .addTablePrefix("nib_")
 

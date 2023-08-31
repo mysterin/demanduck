@@ -15,6 +15,7 @@ import java.util.List;
  */
 public interface ProjectService extends IService<Project> {
 
+    void saveProject(Project project);
     Long getCompanyIdById(Long projectId);
     List<Project> listProjectByCompanyId(Long companyId);
 }

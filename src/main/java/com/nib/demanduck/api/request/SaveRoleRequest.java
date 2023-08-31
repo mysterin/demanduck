@@ -11,10 +11,10 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/29 18:07
  */
 @Data
-public class SaveUserRoleRequest extends BaseProjectRequest {
+public class SaveRoleRequest {
     @NotNull(message = "用户id不能为空")
     private Long userId;
     @NotBlank(message = "角色不能为空")
     private String role;
-    private Long businessId;
+    private Long companyId;
 }

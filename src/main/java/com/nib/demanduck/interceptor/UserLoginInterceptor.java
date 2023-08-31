@@ -1,18 +1,15 @@
 package com.nib.demanduck.interceptor;
 
 import com.alibaba.fastjson2.JSON;
-import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.api.response.Response;
 import com.nib.demanduck.entity.User;
 import com.nib.demanduck.exception.ErrorCode;
-import com.nib.demanduck.service.UserRoleService;
 import com.nib.demanduck.service.UserService;
 import com.nib.demanduck.util.ThreadLocalUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

@@ -33,6 +33,13 @@ public class Response<T> {
                 .setData(data);
     }
 
+    public static <T> Response success(List<T> data) {
+        return new Response()
+                .setCode(ErrorCode.SUCCESS.getCode())
+                .setMsg(ErrorCode.SUCCESS.getMsg())
+                .setList(data);
+    }
+
     public static Response error() {
         return error(ErrorCode.SYSTEM_ERROR);
     }

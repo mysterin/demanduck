@@ -51,6 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 登录
+     *
      * @param email
      * @param password
      * @return
@@ -78,6 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 根据 token 获取用户
+     *
      * @param token
      * @return
      */
@@ -94,6 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 退出登录
+     *
      * @param token
      */
     @Override
@@ -104,20 +107,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 根据手机号或邮箱获取用户
+     *
      * @param mobile
      * @param email
      * @return
      */
     public User getByMobileOrEmail(String mobile, String email) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(mobile)) {
-            queryWrapper.eq("mobile", mobile);
-            queryWrapper.or();
+        if (StringUtils.isAllBlank(mobile, email)) {
+            return null;
         }
-        if (StringUtils.isNotBlank(email)) {
-            queryWrapper.eq("email", email);
-        }
-        User user = baseMapper.selectOne(queryWrapper);
-        return user;
+        return lambdaQuery()
+                .eq(StringUtils.isNotBlank(mobile), User::getMobile, mobile)
+                .or()
+                .eq(StringUtils.isNotBlank(email), User::getEmail, email)
+                .one();
     }
 }

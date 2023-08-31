@@ -1,6 +1,7 @@
 package com.nib.demanduck.util;
 
 import com.alibaba.fastjson2.JSON;
+import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Supplier;
@@ -27,13 +30,13 @@ public class RedisUtils {
     private RedisLockRegistry redisLockRegistry;
 
     /**
-     * 设置缓存
+     * 设置缓存, null 会设置占位符
      * @param key
      * @param value
      * @param ttl 过期时间，单位秒
      */
     public void set(String key, Object value, long ttl) {
-        redisTemplate.opsForValue().set(key, JSON.toJSONString(value), ttl, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, toJson(value), ttl, TimeUnit.SECONDS);
     }
 
     /**
@@ -159,8 +162,8 @@ public class RedisUtils {
         redisTemplate.delete(key);
     }
 
-    public void del(String key, Map<String, Object> map) {
-        key = RedisKeyConstant.getKey(key, map);
+    public void del(String key, Object...params) {
+        key = RedisKeyConstant.getKey(key, params);
         redisTemplate.delete(key);
     }
 
@@ -190,5 +193,17 @@ public class RedisUtils {
             lock.unlock();
         }
         return null;
+    }
+
+    public <T> T parseObject(String val, Class<T> clazz) {
+        return RedisConstant.PLACEHOLDER.equals(val) ? null : JSON.parseObject(val, clazz);
+    }
+
+    public <T> List<T> parseArray(String val, Class<T> clazz) {
+        return RedisConstant.PLACEHOLDER.equals(val) ? new ArrayList<>() : JSON.parseArray(val, clazz);
+    }
+
+    public String toJson(Object obj) {
+        return Objects.isNull(obj) ? RedisConstant.PLACEHOLDER : JSON.toJSONString(obj);
     }
 }

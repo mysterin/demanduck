@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -18,6 +19,15 @@ import java.util.List;
  */
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
+
+    @Override
+    public void saveProject(Project project) {
+        if (Objects.isNull(project.getId())) {
+            save(project);
+        } else {
+            updateById(project);
+        }
+    }
 
     @Override
     public Long getCompanyIdById(Long projectId) {

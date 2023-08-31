@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
     private ErrorCode errorCode;
 
     public ServiceException(ErrorCode errorCode) {

@@ -17,12 +17,12 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-30 10:05:51
+ * @since 2023-08-31
  */
 @Getter
 @Setter
-@TableName("nib_user_role")
-public class UserRole implements Serializable {
+@TableName("nib_role")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,22 +39,16 @@ public class UserRole implements Serializable {
     private Long userId;
 
     /**
-     * 角色所在层次，SYSTEM=系统层次，COMPANY=公司层次，PROJECT=项目层次
+     * 公司 ID
      */
-    @TableField("level")
-    private String level;
+    @TableField("company_id")
+    private Long companyId;
 
     /**
-     * 角色, ADMIN=管理员, MEMBER=普通成员
+     * 角色, SYSTEM_ADMIN=系统管理员, COMPANY_ADMIN=公司管理员, COMPANY_MEMBER=公司普通成员
      */
     @TableField("role")
     private String role;
-
-    /**
-     * 公司 ID(level=COMPANY)、项目 ID(level=PROJECT)
-     */
-    @TableField("business_id")
-    private Long businessId;
 
     /**
      * 是否删除，0=未删除，1=已删除

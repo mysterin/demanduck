@@ -1,12 +1,18 @@
 package com.nib.demanduck.service.impl;
 
 import com.nib.demanduck.entity.Company;
+import com.nib.demanduck.entity.Role;
 import com.nib.demanduck.mapper.CompanyMapper;
 import com.nib.demanduck.service.CompanyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.nib.demanduck.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -18,6 +24,9 @@ import java.util.Objects;
  */
 @Service
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public void saveCompany(Company company) {
@@ -38,5 +47,16 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         // 删除公司信息
         Objects.requireNonNull(companyId);
         removeById(companyId);
+    }
+
+    @Override
+    public List<Company> listUserCompany(Long userId) {
+        Objects.requireNonNull(userId);
+        List<Role> roles = roleService.listUserAllCompanyRole(userId);
+        if (roles.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Long> companyIds = roles.stream().map(Role::getCompanyId).collect(Collectors.toList());
+        return lambdaQuery().in(Company::getId, companyIds).list();
     }
 }

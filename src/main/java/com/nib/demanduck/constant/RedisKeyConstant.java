@@ -1,6 +1,6 @@
 package com.nib.demanduck.constant;
 
-import java.util.Map;
+import java.text.MessageFormat;
 import java.util.Objects;
 
 /**
@@ -9,16 +9,22 @@ import java.util.Objects;
  * @date 2023/8/30 18:05
  */
 public class RedisKeyConstant {
-    public static final String USER_ROLE_KEY = "USER:ROLE:{companyId}:{projectId}:{userId}";
+    /**
+     * 用户角色缓存
+     * {0} companyId
+     * {1} userId
+     */
+    public static final String USER_ROLE_KEY = "USER:ROLE:{0}:{1}";
 
-    public static String getKey(String key, Map<String, Object> params) {
+    public static String getKey(String key, Object...params) {
         if (Objects.isNull(params)) {
             return key;
         }
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            String value = Objects.isNull(entry.getValue()) ? "" : entry.getValue().toString();
-            key = key.replace("{" + entry.getKey() + "}", value);
+        // 转成字符串，不然 long 类型格式化会带上逗号
+        String[] paramStr = new String[params.length];
+        for (int i = 0; i < params.length; i++) {
+            paramStr[i] = String.valueOf(params[i]);
         }
-        return key;
+        return MessageFormat.format(key, paramStr);
     }
 }
