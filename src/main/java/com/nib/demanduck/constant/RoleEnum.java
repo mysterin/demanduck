@@ -2,54 +2,65 @@ package com.nib.demanduck.constant;
 
 /**
  * @author linxiaobin
- * @Description 用户角色 priority越小权限越大
+ * @Description 用户角色
  * @date 2023/8/28 21:15
  */
 public enum RoleEnum {
     /**
      * 系统管理员
      */
-    SYSTEM_ADMIN(RoleConstant.SYSTEM_ADMIN, 1),
+    SYSTEM_ADMIN(1),
     /**
      * 公司管理员
      */
-    COMPANY_ADMIN(RoleConstant.COMPANY_ADMIN, 10),
+    COMPANY_ADMIN(1 << 1),
     /**
      * 公司普通成员
      */
-    COMPANY_MEMBER(RoleConstant.COMPANY_MEMBER, 11),
+    COMPANY_MEMBER(1 << 2),
+    /**
+     * 项目管理员
+     */
+    PROJECT_ADMIN(1 << 3),
+    /**
+     * 项目普通成员
+     */
+    PROJECT_MEMBER(1 << 4),
+
+    /**
+     * 系统管理员和公司管理员
+     */
+    SYS_COM_ADMIN(SYSTEM_ADMIN.code | COMPANY_ADMIN.code),
+    /**
+     * 系统管理员和公司管理员和项目管理员
+     */
+    SYS_COM_PRO_ADMIN(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | PROJECT_ADMIN.code),
+    SYS_COM_PRO_MEMBER(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | PROJECT_ADMIN.code | PROJECT_MEMBER.code),
+    COM_PRO_ADMIN(COMPANY_ADMIN.code | PROJECT_ADMIN.code),
     ;
-    private String role;
-    private Integer priority;
 
-    RoleEnum(String role, Integer priority) {
-        this.role = role;
-        this.priority = priority;
-    }
+    private int code;
 
-    public String getRole() {
-        return role;
-    }
-
-    public Integer getPriority() {
-        return priority;
+    RoleEnum(int code) {
+        this.code = code;
     }
 
     public static RoleEnum getByRole(String role) {
         for (RoleEnum value : RoleEnum.values()) {
-            if (value.getRole().equals(role)) {
+            if (value.name().equals(role)) {
                 return value;
             }
         }
         return null;
     }
 
-    /**
-     * 是否有权限
-     * @param roleEnum
-     * @return
-     */
-    public boolean hasPermission(RoleEnum roleEnum) {
-        return this.getPriority() <= roleEnum.getPriority();
+    public boolean isIn(RoleEnum[] roleEnum) {
+        for (RoleEnum role : roleEnum) {
+            if ((this.code & role.code) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
+
 }

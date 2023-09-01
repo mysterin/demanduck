@@ -2,6 +2,7 @@ package com.nib.demanduck.controller;
 
 import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.api.request.BaseCompanyRequest;
+import com.nib.demanduck.api.request.BaseProjectRequest;
 import com.nib.demanduck.api.request.RoleRequest;
 import com.nib.demanduck.api.request.SaveRoleRequest;
 import com.nib.demanduck.api.response.Response;
@@ -55,7 +56,7 @@ public class RoleController {
     @PostMapping("/deleteSystemRole")
     @UserPermission(RoleEnum.SYSTEM_ADMIN)
     public Response deleteSystemRole(@RequestBody @Validated RoleRequest request) {
-        roleService.deleteUserRole(request.getRoleId());
+        roleService.deleteRole(request.getRoleId());
         return Response.success();
     }
 
@@ -74,7 +75,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/saveCompanyRole")
-    @UserPermission(RoleEnum.COMPANY_ADMIN)
+    @UserPermission(RoleEnum.SYS_COM_ADMIN)
     public Response saveCompanyRole(@RequestBody @Validated SaveRoleRequest request) {
         Role role = new Role();
         BeanUtils.copyProperties(request, role);
@@ -86,9 +87,9 @@ public class RoleController {
      * 删除用户公司角色接口
      */
     @PostMapping("/deleteCompanyRole")
-    @UserPermission(RoleEnum.COMPANY_ADMIN)
+    @UserPermission(RoleEnum.SYS_COM_ADMIN)
     public Response deleteCompanyRole(@RequestBody @Validated RoleRequest request) {
-        roleService.deleteUserRole(request.getRoleId());
+        roleService.deleteRole(request.getRoleId());
         return Response.success();
     }
 
@@ -96,8 +97,39 @@ public class RoleController {
      * 查询公司角色列表接口
      */
     @PostMapping("/listCompanyRole")
-    @UserPermission(RoleEnum.COMPANY_ADMIN)
+    @UserPermission(RoleEnum.SYS_COM_ADMIN)
     public Response listCompanyRole(@RequestBody @Validated BaseCompanyRequest request) {
         return Response.success(roleService.listCompanyRole(request.getCompanyId()));
+    }
+
+    /**
+     * 保存项目角色接口
+     */
+    @PostMapping("/saveProjectRole")
+    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    public Response saveProjectRole(@RequestBody @Validated SaveRoleRequest request) {
+        Role role = new Role();
+        BeanUtils.copyProperties(request, role);
+        roleService.saveRole(role);
+        return Response.success();
+    }
+
+    /**
+     * 删除项目角色接口
+     */
+    @PostMapping("/deleteProjectRole")
+    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    public Response deleteProjectRole(@RequestBody @Validated RoleRequest request) {
+        roleService.deleteRole(request.getRoleId());
+        return Response.success();
+    }
+
+    /**
+     * 查询项目角色列表接口
+     */
+    @PostMapping("/listProjectRole")
+    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    public Response listProjectRole(@RequestBody @Validated BaseProjectRequest request) {
+        return Response.success(roleService.listProjectRole(request.getCompanyId(), request.getProjectId()));
     }
 }

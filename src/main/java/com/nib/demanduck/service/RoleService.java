@@ -18,12 +18,14 @@ public interface RoleService extends IService<Role> {
 
     List<Role> listUserRole(Long companyId, Long userId);
 
-    Boolean hasPermission(Long companyId, Long userId, RoleEnum roleEnum);
+    Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray);
 
     void saveRole(Role role);
-    void deleteUserRole(Long userRoleId);
+    void deleteRole(Long userRoleId);
 
-    List<Role> listUserAllCompanyRole(Long userId);
+    List<Role> listCompanyRoleByUserId(Long userId);
+    List<Role> listProjectRoleByUserId(Long companyId, Long userId);
     List<Role> listSystemRole();
     List<Role> listCompanyRole(Long companyId);
+    List<Role> listProjectRole(Long companyId, Long projectId);
 }

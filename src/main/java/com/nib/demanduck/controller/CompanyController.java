@@ -35,7 +35,7 @@ public class CompanyController {
      * 保存公司接口
      */
     @PostMapping("/save")
-    @UserPermission(RoleEnum.COMPANY_ADMIN)
+    @UserPermission(RoleEnum.SYS_COM_ADMIN)
     public Response save(@RequestBody @Validated SaveCompanyRequest request) {
         Company company = new Company();
         BeanUtils.copyProperties(request, company);
@@ -56,7 +56,7 @@ public class CompanyController {
      * 删除公司接口
      */
     @PostMapping("/delete")
-    @UserPermission(RoleEnum.COMPANY_ADMIN)
+    @UserPermission(RoleEnum.SYS_COM_ADMIN)
     public Response delete(@RequestBody @Validated BaseCompanyRequest request) {
         companyService.deleteCompany(request.getCompanyId());
         return Response.success();

@@ -33,15 +33,15 @@ public class CodeGenerator {
                     builder
                             // 表名
                             .addInclude(
-                                    "nib_assign_user",
-                                    "nib_comment",
-                                    "nib_company",
-                                    "nib_content",
-                                    "nib_demand",
-                                    "nib_flaw",
-                                    "nib_mission",
-                                    "nib_project",
-                                    "nib_user",
+//                                    "nib_assign_user",
+//                                    "nib_comment",
+//                                    "nib_company",
+//                                    "nib_content",
+//                                    "nib_demand",
+//                                    "nib_flaw",
+//                                    "nib_mission",
+//                                    "nib_project",
+//                                    "nib_user",
                                     "nib_role")
                             // 前缀
                             .addTablePrefix("nib_")

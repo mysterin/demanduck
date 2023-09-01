@@ -52,7 +52,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public List<Company> listUserCompany(Long userId) {
         Objects.requireNonNull(userId);
-        List<Role> roles = roleService.listUserAllCompanyRole(userId);
+        List<Role> roles = roleService.listCompanyRoleByUserId(userId);
         if (roles.isEmpty()) {
             return new ArrayList<>();
         }

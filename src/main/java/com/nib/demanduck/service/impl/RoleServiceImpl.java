@@ -1,16 +1,13 @@
 package com.nib.demanduck.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nib.demanduck.annotation.RedisCache;
 import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;
-import com.nib.demanduck.constant.RoleConstant;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Role;
-import com.nib.demanduck.exception.ErrorCode;
-import com.nib.demanduck.exception.ServiceException;
 import com.nib.demanduck.mapper.RoleMapper;
 import com.nib.demanduck.service.RoleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nib.demanduck.util.ApplicationUtils;
 import com.nib.demanduck.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,7 +37,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private RedisUtils redisUtils;
 
     /**
-     * 查询用户角色, 包括系统角色和公司角色
+     * 查询用户角色, 包括系统角色和公司角色和项目角色
      * @param companyId
      * @param userId
      * @return
@@ -52,7 +50,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         List<Role> list = new ArrayList<>();
         // 系统下角色
         List<Role> systemRoleList = lambdaQuery()
-                .eq(Role::getRole, RoleConstant.SYSTEM_ADMIN)
+                .eq(Role::getRole, RoleEnum.SYSTEM_ADMIN)
                 .eq(Role::getUserId, userId).list();
         list.addAll(systemRoleList);
 
@@ -61,7 +59,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             List<Role> companyRoleList = lambdaQuery()
                     .eq(Role::getCompanyId, companyId)
                     .eq(Role::getUserId, userId)
-                    .in(Role::getRole, RoleConstant.COMPANY_ADMIN, RoleConstant.COMPANY_MEMBER)
+                    .in(Role::getRole, RoleEnum.COMPANY_ADMIN, RoleEnum.COMPANY_MEMBER, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
                     .list();
             list.addAll(companyRoleList);
         }
@@ -72,18 +70,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * 用户是否有权限
      * @param companyId
      * @param userId
-     * @param roleEnum
+     * @param roleArray
      * @return
      */
     @Override
-    public Boolean hasPermission(Long companyId, Long userId, RoleEnum roleEnum) {
+    public Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray) {
         List<RoleEnum> list = applicationUtils.getBean(getClass())
                 .listUserRole(companyId, userId)
                 .stream()
                 .map(userRole -> RoleEnum.getByRole(userRole.getRole()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return list.stream().anyMatch(userRole -> userRole.hasPermission(roleEnum));
+        return list.stream().anyMatch(userRole -> userRole.isIn(roleArray));
     }
 
     @Override
@@ -91,8 +89,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Assert.notNull(role, "userRole can not be null");
         Assert.notNull(role.getUserId(), "userId can not be null");
         Assert.notNull(role.getRole(), "role can not be null");
-        if (isCompanyRole(role)) {
+        if (isCompanyRole(role) || isProjectRole(role)) {
             Assert.notNull(role.getCompanyId(), "companyId can not be null");
+        }
+        if (isProjectRole(role)) {
+            Assert.notNull(role.getProjectId(), "projectId can not be null");
         }
         Role dbRole = lambdaQuery()
                 .eq(Role::getUserId, role.getUserId())
@@ -113,7 +114,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public void deleteUserRole(Long userRoleId) {
+    public void deleteRole(Long userRoleId) {
         Role role = getById(userRoleId);
         if (Objects.isNull(role)) {
             return;
@@ -122,27 +123,74 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         deleteCache(role);
     }
 
+    /**
+     * 查询用户所有公司角色
+     * @param userId
+     * @return
+     */
     @Override
-    public List<Role> listUserAllCompanyRole(Long userId) {
+    public List<Role> listCompanyRoleByUserId(Long userId) {
         return lambdaQuery()
                 .eq(Role::getUserId, userId)
-                .in(Role::getRole, RoleConstant.COMPANY_ADMIN, RoleConstant.COMPANY_MEMBER)
+                .in(Role::getRole, RoleEnum.COMPANY_ADMIN, RoleEnum.COMPANY_MEMBER)
                 .list();
     }
 
+    /**
+     * 查询用户在公司下所有项目角色
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Role> listProjectRoleByUserId(Long companyId, Long userId) {
+        Assert.notNull(companyId, "companyId can not be null");
+        Assert.notNull(userId, "userId can not be null");
+        return lambdaQuery()
+                .eq(Role::getUserId, userId)
+                .eq(Role::getCompanyId, companyId)
+                .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
+                .list();
+    }
+
+    /**
+     * 查询用户系统角色
+     * @return
+     */
     @Override
     public List<Role> listSystemRole() {
         return lambdaQuery()
-                .eq(Role::getRole, RoleConstant.SYSTEM_ADMIN)
+                .eq(Role::getRole, RoleEnum.SYSTEM_ADMIN)
                 .list();
     }
 
+    /**
+     * 查询公司下所有角色
+     * @param companyId
+     * @return
+     */
     @Override
     public List<Role> listCompanyRole(Long companyId) {
         Assert.notNull(companyId, "companyId can not be null");
         return lambdaQuery()
                 .eq(Role::getCompanyId, companyId)
-                .in(Role::getRole, RoleConstant.COMPANY_ADMIN, RoleConstant.COMPANY_MEMBER)
+                .in(Role::getRole, RoleEnum.COMPANY_ADMIN, RoleEnum.COMPANY_MEMBER)
+                .list();
+    }
+
+    /**
+     * 查询项目下所有角色
+     * @param companyId
+     * @param projectId
+     * @return
+     */
+    @Override
+    public List<Role> listProjectRole(Long companyId, Long projectId) {
+        Assert.notNull(companyId, "companyId can not be null");
+        Assert.notNull(projectId, "projectId can not be null");
+        return lambdaQuery()
+                .eq(Role::getCompanyId, companyId)
+                .eq(Role::getProjectId, projectId)
+                .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
                 .list();
     }
 
@@ -151,12 +199,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     public boolean isSystemRole(Role role) {
-        return Objects.equals(role.getRole(), RoleConstant.SYSTEM_ADMIN);
+        RoleEnum roleEnum = RoleEnum.getByRole(role.getRole());
+        return Objects.equals(roleEnum, RoleEnum.SYSTEM_ADMIN);
     }
 
     public boolean isCompanyRole(Role role) {
-        return Objects.equals(role.getRole(), RoleConstant.COMPANY_ADMIN)
-                || Objects.equals(role.getRole(), RoleConstant.COMPANY_MEMBER);
+        RoleEnum roleEnum = RoleEnum.getByRole(role.getRole());
+        return Objects.equals(roleEnum, RoleEnum.COMPANY_ADMIN)
+                || Objects.equals(roleEnum, RoleEnum.COMPANY_MEMBER);
+    }
+
+    public boolean isProjectRole(Role role) {
+        RoleEnum roleEnum = RoleEnum.getByRole(role.getRole());
+        return Objects.equals(roleEnum, RoleEnum.PROJECT_ADMIN)
+                || Objects.equals(roleEnum, RoleEnum.PROJECT_MEMBER);
     }
 
 }

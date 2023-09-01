@@ -3,6 +3,7 @@ package com.nib.demanduck.service.impl;
 import com.alibaba.fastjson2.JSON;
 import com.nib.demanduck.DemanduckApplicationTests;
 import com.nib.demanduck.constant.RoleConstant;
+import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Role;
 import com.nib.demanduck.service.RoleService;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ class RoleServiceImplTest extends DemanduckApplicationTests {
         // 配置系统管理员
         Role role = new Role();
         role.setUserId(86791569637378L);
-        role.setRole(RoleConstant.SYSTEM_ADMIN);
+        role.setRole(RoleEnum.SYSTEM_ADMIN.name());
         roleService.saveRole(role);
     }
     
@@ -37,7 +38,7 @@ class RoleServiceImplTest extends DemanduckApplicationTests {
 //        System.out.println(list);
         Role role = new Role();
         role.setId(1L);
-        role.setRole(RoleConstant.SYSTEM_ADMIN);
+        role.setRole(RoleEnum.SYSTEM_ADMIN.name());
         List<Role> list = new ArrayList<>();
         list.add(role);
         String val = JSON.toJSONString(list);

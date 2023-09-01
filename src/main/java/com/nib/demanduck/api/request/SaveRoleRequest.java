@@ -17,4 +17,5 @@ public class SaveRoleRequest {
     @NotBlank(message = "角色不能为空")
     private String role;
     private Long companyId;
+    private Long projectId;
 }

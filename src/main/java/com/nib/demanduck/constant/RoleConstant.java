@@ -8,9 +8,8 @@ package com.nib.demanduck.constant;
 public class RoleConstant {
 
     /**
-     * role
+     * 常用角色组合
      */
-    public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
-    public static final String COMPANY_ADMIN = "COMPANY_ADMIN";
-    public static final String COMPANY_MEMBER = "COMPANY_MEMBER";
+    public static final RoleEnum[] SYS_COM_ADMIN = new RoleEnum[]{RoleEnum.SYSTEM_ADMIN, RoleEnum.COMPANY_ADMIN};
+    public static final RoleEnum[] SYS_COM_PRO_ADMIN = {RoleEnum.SYSTEM_ADMIN, RoleEnum.COMPANY_ADMIN, RoleEnum.PROJECT_ADMIN};
 }
