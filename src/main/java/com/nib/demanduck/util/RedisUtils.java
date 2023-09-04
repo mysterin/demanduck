@@ -5,13 +5,14 @@ import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Supplier;
@@ -36,7 +37,7 @@ public class RedisUtils {
      * @param ttl 过期时间，单位秒
      */
     public void set(String key, Object value, long ttl) {
-        redisTemplate.opsForValue().set(key, toJson(value), ttl, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, toJsonString(value), ttl, TimeUnit.SECONDS);
     }
 
     /**
@@ -46,8 +47,8 @@ public class RedisUtils {
      * @param value
      * @param ttl
      */
-    public void put(String key, String hashKey, Object value, long ttl) {
-        redisTemplate.opsForHash().put(key, hashKey, JSON.toJSONString(value));
+    public void hset(String key, String hashKey, Object value, long ttl) {
+        redisTemplate.opsForHash().put(key, hashKey, toJsonString(value));
         redisTemplate.expire(key, ttl, TimeUnit.SECONDS);
     }
 
@@ -58,7 +59,7 @@ public class RedisUtils {
      * @param ttl
      */
     public void leftPush(String key, Object value, long ttl) {
-        redisTemplate.opsForList().leftPush(key, JSON.toJSONString(value));
+        redisTemplate.opsForList().leftPush(key, toJsonString(value));
         redisTemplate.expire(key, ttl, TimeUnit.SECONDS);
     }
 
@@ -69,7 +70,7 @@ public class RedisUtils {
      * @param ttl
      */
     public void rightPush(String key, Object value, long ttl) {
-        redisTemplate.opsForList().rightPush(key, JSON.toJSONString(value));
+        redisTemplate.opsForList().rightPush(key, toJsonString(value));
         redisTemplate.expire(key, ttl, TimeUnit.SECONDS);
     }
 
@@ -80,7 +81,7 @@ public class RedisUtils {
      * @param ttl
      */
     public void sadd(String key, Object value, long ttl) {
-        redisTemplate.opsForSet().add(key, JSON.toJSONString(value));
+        redisTemplate.opsForSet().add(key, toJsonString(value));
         redisTemplate.expire(key, ttl, TimeUnit.SECONDS);
     }
 
@@ -92,7 +93,7 @@ public class RedisUtils {
      * @param ttl
      */
     public void zadd(String key, Object value, double score, long ttl) {
-        redisTemplate.opsForZSet().add(key, JSON.toJSONString(value), score);
+        redisTemplate.opsForZSet().add(key, toJsonString(value), score);
         redisTemplate.expire(key, ttl, TimeUnit.SECONDS);
     }
 
@@ -102,7 +103,7 @@ public class RedisUtils {
      * @return
      */
     public String get(String key) {
-        return redisTemplate.opsForValue().get(key);
+        return get(key, String.class);
     }
 
     /**
@@ -114,7 +115,7 @@ public class RedisUtils {
      */
     public <T> T get(String key, Class<T> clazz) {
         String value = redisTemplate.opsForValue().get(key);
-        return JSON.parseObject(value, clazz);
+        return parseObject(value, clazz);
     }
 
     /**
@@ -125,9 +126,13 @@ public class RedisUtils {
      * @return
      * @param <T>
      */
-    public <T> T get(String key, String hashKey, Class<T> clazz) {
+    public <T> T hget(String key, String hashKey, Class<T> clazz) {
         String value = (String) redisTemplate.opsForHash().get(key, hashKey);
-        return JSON.parseObject(value, clazz);
+        return parseObject(value, clazz);
+    }
+
+    public String hget(String key, String hashKey) {
+        return hget(key, hashKey, String.class);
     }
 
     /**
@@ -139,7 +144,7 @@ public class RedisUtils {
      */
     public <T> T leftPop(String key, Class<T> clazz) {
         String value = (String) redisTemplate.opsForList().leftPop(key);
-        return JSON.parseObject(value, clazz);
+        return parseObject(value, clazz);
     }
 
     /**
@@ -150,8 +155,14 @@ public class RedisUtils {
      * @param <T>
      */
     public <T> T rightPop(String key, Class<T> clazz) {
-        String value = (String) redisTemplate.opsForList().rightPop(key);
-        return JSON.parseObject(value, clazz);
+        ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        String value = listOperations.rightPop(key);
+        return parseObject(value, clazz);
+    }
+
+    public Set<String> smembers(String key) {
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+        return setOperations.members(key);
     }
 
     /**
@@ -196,14 +207,28 @@ public class RedisUtils {
     }
 
     public <T> T parseObject(String val, Class<T> clazz) {
-        return RedisConstant.PLACEHOLDER.equals(val) ? null : JSON.parseObject(val, clazz);
+        if (Objects.isNull(val) || RedisConstant.PLACEHOLDER.equals(val)) {
+            return null;
+        } else if (String.class.equals(clazz)) {
+            return (T) val;
+        } else {
+            return JSON.parseObject(val, clazz);
+        }
     }
 
     public <T> List<T> parseArray(String val, Class<T> clazz) {
         return RedisConstant.PLACEHOLDER.equals(val) ? new ArrayList<>() : JSON.parseArray(val, clazz);
     }
 
-    public String toJson(Object obj) {
-        return Objects.isNull(obj) ? RedisConstant.PLACEHOLDER : JSON.toJSONString(obj);
+    public String toJsonString(Object obj) {
+        String str;
+        if (Objects.isNull(obj)) {
+            str = RedisConstant.PLACEHOLDER;
+        } else if (obj instanceof String) {
+            str = (String) obj;
+        } else {
+            str = JSON.toJSONString(obj);
+        }
+        return str;
     }
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/30 14:10
  */
 @Data
-public class BaseUserRequest {
+public class BaseUserRequest extends BaseRequest {
 
     /**
      * 用户 id

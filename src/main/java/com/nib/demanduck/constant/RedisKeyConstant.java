@@ -15,6 +15,16 @@ public class RedisKeyConstant {
      * {1} userId
      */
     public static final String USER_ROLE_KEY = "USER:ROLE:{0}:{1}";
+    /**
+     * 用户 token:id 缓存
+     * {0} token
+     */
+    public static final String SESSION_TOKEN_ID_KEY = "SESSION:TOKEN:{0}";
+    /**
+     * 用户 id:token 缓存
+     * {0} userId
+     */
+    public static final String SESSION_ID_TOKEN_KEY = "SESSION:ID:{0}";
 
     public static String getKey(String key, Object...params) {
         if (Objects.isNull(params)) {

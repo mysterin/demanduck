@@ -1,5 +1,6 @@
 package com.nib.demanduck.api.response;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.exception.ErrorCode;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -18,7 +19,7 @@ public class Response<T> {
     private String msg;
     private T data;
     private List<T> list;
-    private Integer total;
+    private Long total;
 
     public static Response success() {
         return new Response()
@@ -38,6 +39,22 @@ public class Response<T> {
                 .setCode(ErrorCode.SUCCESS.getCode())
                 .setMsg(ErrorCode.SUCCESS.getMsg())
                 .setList(data);
+    }
+
+    public static <T> Response success(List<T> data, Long total) {
+        return new Response()
+                .setCode(ErrorCode.SUCCESS.getCode())
+                .setMsg(ErrorCode.SUCCESS.getMsg())
+                .setList(data)
+                .setTotal(total);
+    }
+
+    public static <T> Response success(IPage<T> page) {
+        return new Response()
+                .setCode(ErrorCode.SUCCESS.getCode())
+                .setMsg(ErrorCode.SUCCESS.getMsg())
+                .setList(page.getRecords())
+                .setTotal(page.getTotal());
     }
 
     public static Response error() {

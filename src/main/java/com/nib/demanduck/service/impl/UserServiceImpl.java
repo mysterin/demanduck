@@ -1,8 +1,9 @@
 package com.nib.demanduck.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nib.demanduck.api.response.LoginUserData;
+import com.nib.demanduck.constant.AccessSource;
 import com.nib.demanduck.constant.RedisConstant;
+import com.nib.demanduck.constant.RedisKeyConstant;
 import com.nib.demanduck.entity.User;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.exception.ServiceException;
@@ -17,7 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.UUID;
 
 /**
@@ -31,7 +31,6 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    private static final String USER_SESSION_KEY = "USER:SESSION:{0}";
 
     @Autowired
     private RedisUtils redisUtils;
@@ -67,10 +66,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!StringUtils.equals(sha1Hex, user.getPassword())) {
             throw new ServiceException(ErrorCode.PASSWORD_ERROR);
         }
-        // 生成 UUID 表示 token
-        String token = UUID.randomUUID().toString().replace("-", "");
-        String key = MessageFormat.format(USER_SESSION_KEY, token);
-        redisUtils.set(key, user.getId(), RedisConstant.ONE_WEEK);
+        // 先删除已有 token
+        deleteToken(user.getId());
+        // 生成 token
+        String token = generateToken(user.getId());
         LoginUserData loginUserData = new LoginUserData();
         BeanUtils.copyProperties(user, loginUserData);
         loginUserData.setToken(token);
@@ -85,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public User getByToken(String token) {
-        String key = MessageFormat.format(USER_SESSION_KEY, token);
+        String key = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_TOKEN_ID_KEY, token);
         Long userId = redisUtils.get(key, Long.class);
         if (userId == null) {
             return null;
@@ -101,7 +100,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public void logout(String token) {
-        String key = MessageFormat.format(USER_SESSION_KEY, token);
+        String key = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_TOKEN_ID_KEY, token);
         redisUtils.del(key);
     }
 
@@ -121,5 +120,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .or()
                 .eq(StringUtils.isNotBlank(email), User::getEmail, email)
                 .one();
+    }
+
+    /**
+     * 删除 token
+     *
+     * @param userId
+     */
+    public void deleteToken(Long userId) {
+        String key = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_ID_TOKEN_KEY, userId);
+        String token = redisUtils.hget(key, AccessSource.PC.name());
+        String tokenKey = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_TOKEN_ID_KEY, token);
+        redisUtils.del(tokenKey);
+    }
+
+    /**
+     * 生成 token
+     * @param userId
+     * @return
+     */
+    public String generateToken(Long userId) {
+        String token = UUID.randomUUID().toString().replace("-", "");
+        String tokenIdKey = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_TOKEN_ID_KEY, token);
+        redisUtils.set(tokenIdKey, userId, RedisConstant.ONE_WEEK);
+        String idTokenKey = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_ID_TOKEN_KEY, userId);
+        redisUtils.hset(idTokenKey, AccessSource.PC.name(), token, RedisConstant.ONE_WEEK);
+        return token;
     }
 }

@@ -10,11 +10,10 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/30 14:10
  */
 @Data
-public class RoleRequest extends BaseRequest {
-
+public class BaseProjectPageRequest extends BaseCompanyPageRequest {
     /**
-     * 角色 id
+     * 项目id
      */
-    @NotNull(message = "角色不能为空")
-    private Long roleId;
+    @NotNull(message = "项目id不能为空")
+    private Long projectId;
 }

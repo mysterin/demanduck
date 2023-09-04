@@ -48,9 +48,9 @@ public class ProjectController {
     /**
      * 查询公司的项目列表
      */
-    @PostMapping("/listCompanyProject")
+    @PostMapping("/list")
     @UserPermission(RoleEnum.SYS_COM_PRO_MEMBER)
-    public Response<List<Project>> listCompanyProject(@RequestBody @Validated BaseCompanyRequest request) {
+    public Response<List<Project>> list(@RequestBody @Validated BaseCompanyRequest request) {
         return Response.success(projectService.listProjectByCompanyId(request.getCompanyId()));
     }
 

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2023/8/30 13:53
  */
 @Data
-public class SaveCompanyRequest {
+public class SaveCompanyRequest extends BaseRequest {
     /**
      * 公司名称
      */

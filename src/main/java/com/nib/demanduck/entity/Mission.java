@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-31
+ * @since 2023-09-04
  */
 @Getter
 @Setter
@@ -43,6 +43,12 @@ public class Mission implements Serializable {
      */
     @TableField("project_id")
     private Long projectId;
+
+    /**
+     * 需求 ID
+     */
+    @TableField("demand_id")
+    private Long demandId;
 
     /**
      * 任务标题

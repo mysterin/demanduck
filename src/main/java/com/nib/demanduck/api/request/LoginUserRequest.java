@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2023/8/28 19:41
  */
 @Data
-public class LoginUserRequest {
+public class LoginUserRequest extends BaseRequest {
     /**
      * 邮箱
      */

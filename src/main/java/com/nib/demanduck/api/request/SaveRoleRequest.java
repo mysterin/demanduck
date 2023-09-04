@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/29 18:07
  */
 @Data
-public class SaveRoleRequest {
+public class SaveRoleRequest extends BaseRequest {
     @NotNull(message = "用户id不能为空")
     private Long userId;
     @NotBlank(message = "角色不能为空")

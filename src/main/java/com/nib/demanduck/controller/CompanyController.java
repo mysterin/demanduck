@@ -46,8 +46,8 @@ public class CompanyController {
     /**
      * 查询用户的公司列表
      */
-    @PostMapping("/listUserCompany")
-    public Response<Company> listUserCompany() {
+    @PostMapping("/list")
+    public Response<Company> list() {
         Long userId = ThreadLocalUtils.getUserId();
         return Response.success(companyService.listUserCompany(userId));
     }

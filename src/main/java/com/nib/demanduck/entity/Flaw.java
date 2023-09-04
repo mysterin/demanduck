@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-31
+ * @since 2023-09-04
  */
 @Getter
 @Setter
@@ -45,6 +45,12 @@ public class Flaw implements Serializable {
     private Long projectId;
 
     /**
+     * 需求 ID
+     */
+    @TableField("demand_id")
+    private Long demandId;
+
+    /**
      * 缺陷标题
      */
     @TableField("title")
@@ -57,10 +63,10 @@ public class Flaw implements Serializable {
     private String priority;
 
     /**
-     * 状态, OPEN=新缺陷, PROCESSING=处理中, PROCESSED=处理完成, CLOSE=关闭, REFUSE=已拒绝
+     * 状态, NEW=新缺陷, PROCESSING=处理中, PROCESSED=处理完成, CLOSE=关闭, REFUSE=已拒绝
      */
-    @TableField("status")
-    private String status;
+    @TableField("state")
+    private String state;
 
     /**
      * 开始时间

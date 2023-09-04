@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/30 14:10
  */
 @Data
-public class BaseCompanyRequest extends BaseRequest {
+public class BaseCompanyPageRequest extends PageRequest {
 
     /**
      * 公司id

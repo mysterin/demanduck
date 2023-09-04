@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-31
+ * @since 2023-09-04
  */
 @Getter
 @Setter
@@ -59,8 +59,8 @@ public class Demand implements Serializable {
     /**
      * 需求状态, PLANNING=规划中, DEMAND_COMPLETE=需求方案完成, APPRAISAL=已评审, DEVELOPING=开发中, SUBMIT_TEST=已提测, TESTING=测试中, TEST_PASS=测试通过, ONLINE=已上线, PRODUCT_ACCEPTING=产品验收中, PRODUCT_ACCEPTED=产品验收通过, REFUSE=已拒绝
      */
-    @TableField("status")
-    private String status;
+    @TableField("state")
+    private String state;
 
     /**
      * 开始时间

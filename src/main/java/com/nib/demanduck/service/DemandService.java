@@ -1,7 +1,10 @@
 package com.nib.demanduck.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.entity.Demand;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DemandService extends IService<Demand> {
 
+    Demand saveDemand(Demand demand);
+    IPage<Demand> listDemandByProjectId(Long projectId, long pageNo, long pageSize);
 }

@@ -1,5 +1,6 @@
 package com.nib.demanduck.service;
 
+import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.entity.Content;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ContentService extends IService<Content> {
 
+    void saveContent(Long businessId, EntityType type, String content);
 }
