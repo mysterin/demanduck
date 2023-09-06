@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/30 13:53
  */
 @Data
-public class SaveProjectRequest extends BaseRequest {
+public class CreateProjectRequest extends BaseRequest {
     /**
      * 项目id
      */
-    private Long id;
+    private Long projectId;
     /**
      * 公司id
      */

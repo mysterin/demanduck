@@ -6,11 +6,13 @@ import com.nib.demanduck.api.request.BaseProjectRequest;
 import com.nib.demanduck.api.request.RoleRequest;
 import com.nib.demanduck.api.request.SaveRoleRequest;
 import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Role;
 import com.nib.demanduck.service.RoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +41,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/saveSystemRole")
-    @UserPermission(RoleEnum.SYSTEM_ADMIN)
+    @UserPermission(value = RoleEnum.SYSTEM_ADMIN, entityType = EntityType.NO_ENTITY)
     public Response saveSystemRole(@RequestBody @Validated SaveRoleRequest request) {
         Role role = new Role();
         BeanUtils.copyProperties(request, role);
@@ -54,7 +56,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/deleteSystemRole")
-    @UserPermission(RoleEnum.SYSTEM_ADMIN)
+    @UserPermission(value = RoleEnum.SYSTEM_ADMIN, entityType = EntityType.NO_ENTITY)
     public Response deleteSystemRole(@RequestBody @Validated RoleRequest request) {
         roleService.deleteRole(request.getRoleId());
         return Response.success();
@@ -64,7 +66,7 @@ public class RoleController {
      * 查询系统角色列表接口
      */
     @PostMapping("/listSystemRole")
-    @UserPermission(RoleEnum.SYSTEM_ADMIN)
+    @UserPermission(value = RoleEnum.SYSTEM_ADMIN, entityType = EntityType.NO_ENTITY)
     public Response listSystemRole() {
         return Response.success(roleService.listSystemRole());
     }
@@ -75,7 +77,7 @@ public class RoleController {
      * @return
      */
     @PostMapping("/saveCompanyRole")
-    @UserPermission(RoleEnum.SYS_COM_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response saveCompanyRole(@RequestBody @Validated SaveRoleRequest request) {
         Role role = new Role();
         BeanUtils.copyProperties(request, role);
@@ -87,7 +89,7 @@ public class RoleController {
      * 删除用户公司角色接口
      */
     @PostMapping("/deleteCompanyRole")
-    @UserPermission(RoleEnum.SYS_COM_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response deleteCompanyRole(@RequestBody @Validated RoleRequest request) {
         roleService.deleteRole(request.getRoleId());
         return Response.success();
@@ -97,7 +99,7 @@ public class RoleController {
      * 查询公司角色列表接口
      */
     @PostMapping("/listCompanyRole")
-    @UserPermission(RoleEnum.SYS_COM_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response listCompanyRole(@RequestBody @Validated BaseCompanyRequest request) {
         return Response.success(roleService.listCompanyRole(request.getCompanyId()));
     }
@@ -106,7 +108,7 @@ public class RoleController {
      * 保存项目角色接口
      */
     @PostMapping("/saveProjectRole")
-    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
     public Response saveProjectRole(@RequestBody @Validated SaveRoleRequest request) {
         Role role = new Role();
         BeanUtils.copyProperties(request, role);
@@ -118,7 +120,7 @@ public class RoleController {
      * 删除项目角色接口
      */
     @PostMapping("/deleteProjectRole")
-    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
     public Response deleteProjectRole(@RequestBody @Validated RoleRequest request) {
         roleService.deleteRole(request.getRoleId());
         return Response.success();
@@ -128,7 +130,7 @@ public class RoleController {
      * 查询项目角色列表接口
      */
     @PostMapping("/listProjectRole")
-    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
     public Response listProjectRole(@RequestBody @Validated BaseProjectRequest request) {
         return Response.success(roleService.listProjectRole(request.getCompanyId(), request.getProjectId()));
     }

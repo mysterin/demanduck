@@ -3,7 +3,6 @@ package com.nib.demanduck.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.api.request.BaseProjectPageRequest;
-import com.nib.demanduck.api.request.BaseProjectRequest;
 import com.nib.demanduck.api.request.SaveDemandRequest;
 import com.nib.demanduck.api.response.Response;
 import com.nib.demanduck.constant.EntityType;
@@ -42,7 +41,7 @@ public class DemandController {
      * 保存需求接口
      */
     @PostMapping("/save")
-    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
     public Response save(@RequestBody @Validated SaveDemandRequest request) {
         Demand demand = new Demand();
         BeanUtils.copyProperties(request, demand);
@@ -57,7 +56,7 @@ public class DemandController {
      * 查询项目下的需求列表
      */
     @PostMapping("/list")
-    @UserPermission(RoleEnum.SYS_COM_PRO_MEMBER)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
     public Response<Demand> list(@RequestBody @Validated BaseProjectPageRequest request) {
         IPage<Demand> page = demandService.listDemandByProjectId(request.getProjectId(), request.getPageNo(), request.getPageSize());
         return Response.success(page);

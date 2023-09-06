@@ -12,6 +12,10 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class SaveCompanyRequest extends BaseRequest {
     /**
+     * 公司id
+     */
+    private Long companyId;
+    /**
      * 公司名称
      */
     @NotBlank(message = "公司名称不能为空")

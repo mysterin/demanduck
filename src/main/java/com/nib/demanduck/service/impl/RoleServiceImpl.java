@@ -44,8 +44,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     @RedisCache(key = RedisKeyConstant.USER_ROLE_KEY, ttl = RedisConstant.HALF_HOUR,
-            indexNames = {"companyId", "userId"}, returnListType = Role.class)
-    public List<Role> listUserRole(Long companyId, Long userId) {
+            indexNames = {"companyId", "projectId", "userId"}, returnListType = Role.class)
+    public List<Role> listUserRole(Long companyId, Long projectId, Long userId) {
         Objects.requireNonNull(userId);
         List<Role> list = new ArrayList<>();
         // 系统下角色
@@ -59,9 +59,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             List<Role> companyRoleList = lambdaQuery()
                     .eq(Role::getCompanyId, companyId)
                     .eq(Role::getUserId, userId)
-                    .in(Role::getRole, RoleEnum.COMPANY_ADMIN, RoleEnum.COMPANY_MEMBER, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
+                    .in(Role::getRole, RoleEnum.COMPANY_ADMIN, RoleEnum.COMPANY_MEMBER)
                     .list();
             list.addAll(companyRoleList);
+        }
+
+        // 项目下角色
+        if (Objects.nonNull(projectId)) {
+            List<Role> projectRoleList = lambdaQuery()
+                    .eq(Role::getProjectId, projectId)
+                    .eq(Role::getUserId, userId)
+                    .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
+                    .list();
+            list.addAll(projectRoleList);
         }
         return list;
     }
@@ -74,9 +84,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @return
      */
     @Override
-    public Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray) {
+    public Boolean hasPermission(Long companyId, Long projectId, Long userId, RoleEnum[] roleArray) {
         List<RoleEnum> list = applicationUtils.getBean(getClass())
-                .listUserRole(companyId, userId)
+                .listUserRole(companyId, projectId, userId)
                 .stream()
                 .map(userRole -> RoleEnum.getByRole(userRole.getRole()))
                 .filter(Objects::nonNull)
@@ -195,7 +205,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     public void deleteCache(Role role) {
-        redisUtils.del(RedisKeyConstant.USER_ROLE_KEY, role.getCompanyId(), role.getUserId());
+        redisUtils.del(RedisKeyConstant.USER_ROLE_KEY, role.getCompanyId(), role.getProjectId(), role.getUserId());
     }
 
     public boolean isSystemRole(Role role) {

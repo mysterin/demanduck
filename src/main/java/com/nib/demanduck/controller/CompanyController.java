@@ -4,6 +4,7 @@ import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.api.request.BaseCompanyRequest;
 import com.nib.demanduck.api.request.SaveCompanyRequest;
 import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Company;
 import com.nib.demanduck.service.CompanyService;
@@ -35,7 +36,7 @@ public class CompanyController {
      * 保存公司接口
      */
     @PostMapping("/save")
-    @UserPermission(RoleEnum.SYS_COM_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response save(@RequestBody @Validated SaveCompanyRequest request) {
         Company company = new Company();
         BeanUtils.copyProperties(request, company);
@@ -56,7 +57,7 @@ public class CompanyController {
      * 删除公司接口
      */
     @PostMapping("/delete")
-    @UserPermission(RoleEnum.SYS_COM_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response delete(@RequestBody @Validated BaseCompanyRequest request) {
         companyService.deleteCompany(request.getCompanyId());
         return Response.success();

@@ -3,8 +3,10 @@ package com.nib.demanduck.controller;
 import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.api.request.BaseCompanyRequest;
 import com.nib.demanduck.api.request.BaseProjectRequest;
-import com.nib.demanduck.api.request.SaveProjectRequest;
+import com.nib.demanduck.api.request.CreateProjectRequest;
+import com.nib.demanduck.api.request.UpdateProjectRequest;
 import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Project;
 import com.nib.demanduck.service.ProjectService;
@@ -34,13 +36,26 @@ public class ProjectController {
     private ProjectService projectService;
 
     /**
-     * 保存项目接口
+     * 创建项目接口
      */
-    @PostMapping("/save")
-    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
-    public Response save(@RequestBody @Validated SaveProjectRequest request) {
+    @PostMapping("/create")
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
+    public Response create(@RequestBody @Validated CreateProjectRequest request) {
         Project project = new Project();
         BeanUtils.copyProperties(request, project);
+        projectService.saveProject(project);
+        return Response.success();
+    }
+
+    /**
+     * 更新项目接口
+     */
+    @PostMapping("/update")
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
+    public Response update(@RequestBody @Validated UpdateProjectRequest request) {
+        Project project = new Project();
+        BeanUtils.copyProperties(request, project);
+        project.setId(request.getProjectId());
         projectService.saveProject(project);
         return Response.success();
     }
@@ -49,7 +64,7 @@ public class ProjectController {
      * 查询公司的项目列表
      */
     @PostMapping("/list")
-    @UserPermission(RoleEnum.SYS_COM_PRO_MEMBER)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.COMPANY)
     public Response<List<Project>> list(@RequestBody @Validated BaseCompanyRequest request) {
         return Response.success(projectService.listProjectByCompanyId(request.getCompanyId()));
     }
@@ -58,7 +73,7 @@ public class ProjectController {
      * 删除项目接口
      */
     @PostMapping("/delete")
-    @UserPermission(RoleEnum.SYS_COM_PRO_ADMIN)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
     public Response delete(@RequestBody @Validated BaseProjectRequest request) {
         projectService.removeById(request.getProjectId());
         return Response.success();

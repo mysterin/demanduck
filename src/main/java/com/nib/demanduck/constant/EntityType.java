@@ -7,6 +7,10 @@ package com.nib.demanduck.constant;
  */
 public enum EntityType {
     /**
+     * 无实体
+     */
+    NO_ENTITY,
+    /**
      * 公司
      */
     COMPANY,

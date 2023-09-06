@@ -16,9 +16,9 @@ import java.util.List;
  */
 public interface RoleService extends IService<Role> {
 
-    List<Role> listUserRole(Long companyId, Long userId);
+    List<Role> listUserRole(Long companyId, Long projectId, Long userId);
 
-    Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray);
+    Boolean hasPermission(Long companyId, Long projectId, Long userId, RoleEnum[] roleArray);
 
     void saveRole(Role role);
     void deleteRole(Long userRoleId);
