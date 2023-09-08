@@ -1,18 +1,17 @@
 package com.nib.demanduck.controller;
 
 import com.nib.demanduck.annotation.UserPermission;
-import com.nib.demanduck.api.request.BaseCompanyRequest;
-import com.nib.demanduck.api.request.BaseProjectRequest;
-import com.nib.demanduck.api.request.RoleRequest;
-import com.nib.demanduck.api.request.SaveRoleRequest;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.request.company.BaseCompanyRequest;
+import com.nib.demanduck.request.project.BaseProjectRequest;
+import com.nib.demanduck.request.role.RoleRequest;
+import com.nib.demanduck.request.role.SaveRoleRequest;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Role;
 import com.nib.demanduck.service.RoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

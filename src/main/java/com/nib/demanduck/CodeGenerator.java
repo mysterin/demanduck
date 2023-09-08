@@ -37,12 +37,12 @@ public class CodeGenerator {
 //                                    "nib_comment",
 //                                    "nib_company",
 //                                    "nib_content",
-                                    "nib_demand",
-                                    "nib_flaw",
-                                    "nib_mission",
+//                                    "nib_demand",
+                                    "nib_flaw"
+//                                    "nib_mission",
 //                                    "nib_project",
 //                                    "nib_user",
-                                    "nib_role"
+//                                    "nib_role"
                             )
                             // 前缀
                             .addTablePrefix("nib_")

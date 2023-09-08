@@ -37,6 +37,7 @@ public enum RoleEnum {
     SYS_COM_PRO_ADMIN(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | PROJECT_ADMIN.code),
     SYS_COM_PRO_MEMBER(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | PROJECT_ADMIN.code | PROJECT_MEMBER.code),
     COM_PRO_ADMIN(COMPANY_ADMIN.code | PROJECT_ADMIN.code),
+    PRO_ADMIN_MEMBER(PROJECT_ADMIN.code | PROJECT_MEMBER.code),
     ;
 
     private int code;

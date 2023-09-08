@@ -1,7 +1,6 @@
 package com.nib.demanduck.aop;
 
-import com.nib.demanduck.api.response.LoginUserData;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;

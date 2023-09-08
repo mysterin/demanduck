@@ -1,4 +1,4 @@
-package com.nib.demanduck.api.response;
+package com.nib.demanduck.response.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import lombok.Data;

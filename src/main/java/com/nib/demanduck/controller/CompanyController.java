@@ -1,9 +1,9 @@
 package com.nib.demanduck.controller;
 
 import com.nib.demanduck.annotation.UserPermission;
-import com.nib.demanduck.api.request.BaseCompanyRequest;
-import com.nib.demanduck.api.request.SaveCompanyRequest;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.request.company.BaseCompanyRequest;
+import com.nib.demanduck.request.company.SaveCompanyRequest;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Company;

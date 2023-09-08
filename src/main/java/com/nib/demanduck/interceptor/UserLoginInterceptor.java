@@ -1,7 +1,7 @@
 package com.nib.demanduck.interceptor;
 
 import com.alibaba.fastjson2.JSON;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.entity.User;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.service.UserService;

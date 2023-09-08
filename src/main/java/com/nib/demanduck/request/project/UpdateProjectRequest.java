@@ -1,8 +1,7 @@
-package com.nib.demanduck.api.request;
+package com.nib.demanduck.request.project;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**

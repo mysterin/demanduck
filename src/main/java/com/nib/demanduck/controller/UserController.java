@@ -1,9 +1,9 @@
 package com.nib.demanduck.controller;
 
-import com.nib.demanduck.api.request.CreateUserRequest;
-import com.nib.demanduck.api.request.LoginUserRequest;
-import com.nib.demanduck.api.response.LoginUserData;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.request.user.CreateUserRequest;
+import com.nib.demanduck.request.user.LoginUserRequest;
+import com.nib.demanduck.response.user.LoginUserData;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.entity.User;
 import com.nib.demanduck.exception.ServiceException;
 import com.nib.demanduck.service.UserService;

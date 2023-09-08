@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-09-04
+ * @since 2023-09-07
  */
 @Getter
 @Setter
@@ -55,6 +55,12 @@ public class Flaw implements Serializable {
      */
     @TableField("title")
     private String title;
+
+    /**
+     * 类型, DATA=数据问题, CODE=代码问题, UNFINISH_DEMAND=未完成需求, DESIGN=设计缺陷, COMPATIBILITY=兼容问题, INTERFACE_OPTIMIZATION=界面优化, PERFORMANCE=性能问题
+     */
+    @TableField("type")
+    private String type;
 
     /**
      * 优先级, HIGH=高, MIDDLE=中, LOW=低

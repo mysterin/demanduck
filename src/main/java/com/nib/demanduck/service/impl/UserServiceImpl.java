@@ -1,6 +1,6 @@
 package com.nib.demanduck.service.impl;
 
-import com.nib.demanduck.api.response.LoginUserData;
+import com.nib.demanduck.response.user.LoginUserData;
 import com.nib.demanduck.constant.AccessSource;
 import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;

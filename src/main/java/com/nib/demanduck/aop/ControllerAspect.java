@@ -64,17 +64,17 @@ public class ControllerAspect {
             case NO_ENTITY:
                 break;
             case COMPANY:
-                companyId = getBusinessId(args0, "companyId");
+                companyId = ReflectUtils.getLongFieldValue(args0, "companyId");
                 break;
             case PROJECT:
-                projectId = getBusinessId(args0, "projectId");
+                projectId = ReflectUtils.getLongFieldValue(args0, "projectId");
                 if (Objects.nonNull(projectId)) {
                     Project project = projectService.getById(projectId);
                     companyId = project.getCompanyId();
                 }
                 break;
             case DEMAND:
-                Long demandId = getBusinessId(args0, "demandId");
+                Long demandId = ReflectUtils.getLongFieldValue(args0, "demandId");
                 if (Objects.nonNull(demandId)) {
                     Demand demand = demandService.getById(demandId);
                     companyId = demand.getCompanyId();
@@ -82,7 +82,7 @@ public class ControllerAspect {
                 }
                 break;
             case MISSION:
-                Long missionId = getBusinessId(args0, "missionId");
+                Long missionId = ReflectUtils.getLongFieldValue(args0, "missionId");
                 if (Objects.nonNull(missionId)) {
                     Mission mission = missionService.getById(missionId);
                     companyId = mission.getCompanyId();
@@ -90,7 +90,7 @@ public class ControllerAspect {
                 }
                 break;
             case FLAW:
-                Long flawId = getBusinessId(args0, "flawId");
+                Long flawId = ReflectUtils.getLongFieldValue(args0, "flawId");
                 if (Objects.nonNull(flawId)) {
                     Flaw flaw = flawService.getById(flawId);
                     companyId = flaw.getCompanyId();
@@ -106,15 +106,4 @@ public class ControllerAspect {
             throw new ServiceException(ErrorCode.USER_PERMISSION_ERROR);
         }
     }
-
-    /**
-     * 获取参数中的业务 id
-     * @param args0
-     * @param idName
-     * @return
-     */
-    private Long getBusinessId(Object args0, String idName) {
-        return ReflectUtils.getLongFieldValue(args0, idName);
-    }
-
 }

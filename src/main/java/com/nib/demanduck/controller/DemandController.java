@@ -2,9 +2,9 @@ package com.nib.demanduck.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.annotation.UserPermission;
-import com.nib.demanduck.api.request.BaseProjectPageRequest;
-import com.nib.demanduck.api.request.SaveDemandRequest;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.request.project.BaseProjectPageRequest;
+import com.nib.demanduck.request.demand.SaveDemandRequest;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Demand;

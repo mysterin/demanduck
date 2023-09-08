@@ -1,5 +1,6 @@
-package com.nib.demanduck.api.request;
+package com.nib.demanduck.request.user;
 
+import com.nib.demanduck.request.BaseRequest;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,7 +13,18 @@ import javax.validation.constraints.NotBlank;
  * @date 2023/8/28 19:41
  */
 @Data
-public class LoginUserRequest extends BaseRequest {
+public class CreateUserRequest extends BaseRequest {
+    /**
+     * 用户名称
+     */
+    @NotBlank(message = "用户名不能为空")
+    private String username;
+
+    /**
+     * 手机号
+     */
+    private String mobile;
+
     /**
      * 邮箱
      */

@@ -1,11 +1,11 @@
 package com.nib.demanduck.controller;
 
 import com.nib.demanduck.annotation.UserPermission;
-import com.nib.demanduck.api.request.BaseCompanyRequest;
-import com.nib.demanduck.api.request.BaseProjectRequest;
-import com.nib.demanduck.api.request.CreateProjectRequest;
-import com.nib.demanduck.api.request.UpdateProjectRequest;
-import com.nib.demanduck.api.response.Response;
+import com.nib.demanduck.request.company.BaseCompanyRequest;
+import com.nib.demanduck.request.project.BaseProjectRequest;
+import com.nib.demanduck.request.project.CreateProjectRequest;
+import com.nib.demanduck.request.project.UpdateProjectRequest;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Project;

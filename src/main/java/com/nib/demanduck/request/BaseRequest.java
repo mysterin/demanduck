@@ -1,4 +1,4 @@
-package com.nib.demanduck.api.request;
+package com.nib.demanduck.request;
 
 import lombok.Data;
 

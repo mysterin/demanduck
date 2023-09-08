@@ -1,9 +1,9 @@
-package com.nib.demanduck.api.request;
+package com.nib.demanduck.request.demand;
 
+import com.nib.demanduck.request.project.BaseProjectRequest;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**

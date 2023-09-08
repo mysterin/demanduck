@@ -1,4 +1,4 @@
-package com.nib.demanduck.api.response;
+package com.nib.demanduck.response;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.exception.ErrorCode;
