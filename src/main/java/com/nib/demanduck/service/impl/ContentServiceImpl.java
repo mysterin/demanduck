@@ -23,7 +23,10 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
     @Override
     public void saveContent(Long businessId, EntityType type, String content) {
         // 先查询是否存在
-        Content contentEntity = this.lambdaQuery().eq(Content::getBusinessId, businessId).eq(Content::getType, type).one();
+        Content contentEntity = this.lambdaQuery()
+                .eq(Content::getBusinessId, businessId)
+                .eq(Content::getType, type)
+                .one();
         if (Objects.isNull(contentEntity)) {
             contentEntity = new Content();
             contentEntity.setBusinessId(businessId);
@@ -34,5 +37,10 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
             contentEntity.setContent(content);
             this.updateById(contentEntity);
         }
+    }
+
+    @Override
+    public Content getByBusinessId(Long businessId, EntityType type) {
+        return this.lambdaQuery().eq(Content::getBusinessId, businessId).eq(Content::getType, type).one();
     }
 }

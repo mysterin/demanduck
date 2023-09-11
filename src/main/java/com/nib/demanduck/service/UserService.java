@@ -1,9 +1,9 @@
 package com.nib.demanduck.service;
 
-import com.nib.demanduck.api.response.user.LoginUserData;
 import com.nib.demanduck.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.nib.demanduck.exception.ServiceException;
+import com.nib.demanduck.response.user.LoginUserData;
 
 /**
  * <p>

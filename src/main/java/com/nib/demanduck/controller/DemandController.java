@@ -2,6 +2,7 @@ package com.nib.demanduck.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.annotation.UserPermission;
+import com.nib.demanduck.request.demand.BaseDemandRequest;
 import com.nib.demanduck.request.project.BaseProjectPageRequest;
 import com.nib.demanduck.request.demand.SaveDemandRequest;
 import com.nib.demanduck.response.Response;
@@ -60,5 +61,15 @@ public class DemandController {
     public Response<Demand> list(@RequestBody @Validated BaseProjectPageRequest request) {
         IPage<Demand> page = demandService.listDemandByProjectId(request.getProjectId(), request.getPageNo(), request.getPageSize());
         return Response.success(page);
+    }
+
+    /**
+     * 查询需求详情
+     */
+    @PostMapping("/get")
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    public Response<Demand> get(@RequestBody @Validated BaseDemandRequest request) {
+        Demand demand = demandService.getById(request.getDemandId());
+        return Response.success(demand);
     }
 }

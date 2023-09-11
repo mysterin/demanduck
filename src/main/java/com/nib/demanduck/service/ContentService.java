@@ -15,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ContentService extends IService<Content> {
 
     void saveContent(Long businessId, EntityType type, String content);
+    Content getByBusinessId(Long businessId, EntityType type);
 }
