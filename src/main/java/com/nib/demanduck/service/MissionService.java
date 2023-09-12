@@ -1,5 +1,6 @@
 package com.nib.demanduck.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.entity.Mission;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MissionService extends IService<Mission> {
 
+    void saveMission(Mission mission);
+
+    IPage<Mission> listMissionByDemandId(Long demandId, long pageNo, long pageSize);
 }

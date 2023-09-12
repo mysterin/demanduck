@@ -1,5 +1,7 @@
 package com.nib.demanduck.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nib.demanduck.entity.Mission;
 import com.nib.demanduck.mapper.MissionMapper;
 import com.nib.demanduck.service.MissionService;
@@ -17,4 +19,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class MissionServiceImpl extends ServiceImpl<MissionMapper, Mission> implements MissionService {
 
+    @Override
+    public void saveMission(Mission mission) {
+        // id 为空，新增
+        if (mission.getId() == null) {
+            this.save(mission);
+        } else {
+            this.updateById(mission);
+        }
+    }
+
+    @Override
+    public IPage<Mission> listMissionByDemandId(Long demandId, long pageNo, long pageSize) {
+        // 分页查询
+        Page<Mission> page = new Page<>(pageNo, pageSize);
+        return this.lambdaQuery().eq(Mission::getDemandId, demandId).orderByDesc(Mission::getId).page(page);
+    }
 }

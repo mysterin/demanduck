@@ -22,8 +22,9 @@ public class ContentServiceImpl extends ServiceImpl<ContentMapper, Content> impl
 
     @Override
     public void saveContent(Long businessId, EntityType type, String content) {
-        // 先查询是否存在
+        // 先查询是否存在，不需要返回 content 字段
         Content contentEntity = this.lambdaQuery()
+                .select(e -> !e.getProperty().equals("content"))
                 .eq(Content::getBusinessId, businessId)
                 .eq(Content::getType, type)
                 .one();

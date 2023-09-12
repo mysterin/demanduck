@@ -42,7 +42,7 @@ public class DemandController {
      * 保存需求接口
      */
     @PostMapping("/save")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
     public Response save(@RequestBody @Validated SaveDemandRequest request) {
         Demand demand = new Demand();
         BeanUtils.copyProperties(request, demand);
