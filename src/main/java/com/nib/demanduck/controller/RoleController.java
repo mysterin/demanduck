@@ -131,6 +131,6 @@ public class RoleController {
     @PostMapping("/listProjectRole")
     @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
     public Response listProjectRole(@RequestBody @Validated BaseProjectRequest request) {
-        return Response.success(roleService.listProjectRole(request.getCompanyId(), request.getProjectId()));
+        return Response.success(roleService.listProjectRole(request.getProjectId()));
     }
 }

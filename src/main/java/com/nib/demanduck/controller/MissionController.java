@@ -6,9 +6,9 @@ import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Mission;
 import com.nib.demanduck.request.demand.BaseDemandPageRequest;
-import com.nib.demanduck.request.demand.BaseDemandRequest;
 import com.nib.demanduck.request.mission.BaseMissionRequest;
-import com.nib.demanduck.request.mission.SaveMissionRequest;
+import com.nib.demanduck.request.mission.CreateMissionRequest;
+import com.nib.demanduck.request.mission.UpdateMissionRequest;
 import com.nib.demanduck.response.Response;
 import com.nib.demanduck.service.ContentService;
 import com.nib.demanduck.service.MissionService;
@@ -40,13 +40,29 @@ public class MissionController {
     private ContentService contentService;
 
     /**
-     * 保存任务接口
+     * 创建任务接口
      */
-    @PostMapping("/save")
+    @PostMapping("/create")
     @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
-    public Response save(@RequestBody @Validated SaveMissionRequest request) {
+    public Response create(@RequestBody @Validated CreateMissionRequest request) {
         Mission mission = new Mission();
         BeanUtils.copyProperties(request, mission);
+        missionService.saveMission(mission);
+        if (Objects.nonNull(request.getContent())) {
+            contentService.saveContent(mission.getId(), EntityType.MISSION, request.getContent());
+        }
+        return Response.success();
+    }
+
+    /**
+     * 更新任务接口
+     */
+    @PostMapping("/update")
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    public Response update(@RequestBody @Validated UpdateMissionRequest request) {
+        Mission mission = new Mission();
+        BeanUtils.copyProperties(request, mission);
+        mission.setId(request.getMissionId());
         missionService.saveMission(mission);
         if (Objects.nonNull(request.getContent())) {
             contentService.saveContent(mission.getId(), EntityType.MISSION, request.getContent());

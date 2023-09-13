@@ -2,13 +2,14 @@ package com.nib.demanduck.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nib.demanduck.annotation.UserPermission;
-import com.nib.demanduck.request.demand.BaseDemandRequest;
-import com.nib.demanduck.request.project.BaseProjectPageRequest;
-import com.nib.demanduck.request.demand.SaveDemandRequest;
-import com.nib.demanduck.response.Response;
 import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Demand;
+import com.nib.demanduck.request.demand.BaseDemandRequest;
+import com.nib.demanduck.request.demand.CreateDemandRequest;
+import com.nib.demanduck.request.demand.UpdateDemandRequest;
+import com.nib.demanduck.request.project.BaseProjectPageRequest;
+import com.nib.demanduck.response.Response;
 import com.nib.demanduck.service.ContentService;
 import com.nib.demanduck.service.DemandService;
 import org.springframework.beans.BeanUtils;
@@ -39,13 +40,29 @@ public class DemandController {
     private ContentService contentService;
 
     /**
-     * 保存需求接口
+     * 创建需求接口
      */
-    @PostMapping("/save")
+    @PostMapping("/create")
     @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
-    public Response save(@RequestBody @Validated SaveDemandRequest request) {
+    public Response create(@RequestBody @Validated CreateDemandRequest request) {
         Demand demand = new Demand();
         BeanUtils.copyProperties(request, demand);
+        demandService.saveDemand(demand);
+        if (Objects.nonNull(request.getContent())) {
+            contentService.saveContent(demand.getId(), EntityType.DEMAND, request.getContent());
+        }
+        return Response.success();
+    }
+
+    /**
+     * 更新需求接口
+     */
+    @PostMapping("/update")
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    public Response update(@RequestBody @Validated UpdateDemandRequest request) {
+        Demand demand = new Demand();
+        BeanUtils.copyProperties(request, demand);
+        demand.setId(request.getDemandId());
         demandService.saveDemand(demand);
         if (Objects.nonNull(request.getContent())) {
             contentService.saveContent(demand.getId(), EntityType.DEMAND, request.getContent());

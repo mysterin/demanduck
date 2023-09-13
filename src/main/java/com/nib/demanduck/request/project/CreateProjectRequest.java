@@ -14,10 +14,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CreateProjectRequest extends BaseRequest {
     /**
-     * 项目id
-     */
-    private Long projectId;
-    /**
      * 公司id
      */
     @NotNull(message = "公司id不能为空")

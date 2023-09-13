@@ -6,6 +6,8 @@ import com.nib.demanduck.entity.Mission;
 import com.nib.demanduck.mapper.MissionMapper;
 import com.nib.demanduck.service.MissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.nib.demanduck.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,12 +21,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class MissionServiceImpl extends ServiceImpl<MissionMapper, Mission> implements MissionService {
 
+    @Autowired
+    private ProjectService projectService;
+
     @Override
     public void saveMission(Mission mission) {
         // id 为空，新增
         if (mission.getId() == null) {
+            Long companyId = projectService.getCompanyIdById(mission.getProjectId());
+            mission.setCompanyId(companyId);
             this.save(mission);
         } else {
+            Mission dbMission = getById(mission.getId());
+            mission.setCompanyId(dbMission.getCompanyId());
+            mission.setProjectId(dbMission.getProjectId());
             this.updateById(mission);
         }
     }

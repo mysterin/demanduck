@@ -39,7 +39,7 @@ public class ProjectController {
      * 创建项目接口
      */
     @PostMapping("/create")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response create(@RequestBody @Validated CreateProjectRequest request) {
         Project project = new Project();
         BeanUtils.copyProperties(request, project);

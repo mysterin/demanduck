@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @date 2023/8/30 14:10
  */
 @Data
-public class BaseProjectRequest extends BaseCompanyRequest {
+public class BaseProjectRequest {
     /**
      * 项目id
      */

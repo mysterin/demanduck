@@ -31,7 +31,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public Long getCompanyIdById(Long projectId) {
-        return lambdaQuery().eq(Project::getId, projectId).oneOpt().map(Project::getCompanyId).orElse(null);
+        Project project = getById(projectId);
+        return Objects.isNull(project) ? null : project.getCompanyId();
     }
 
     @Override

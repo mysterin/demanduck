@@ -189,16 +189,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     /**
      * 查询项目下所有角色
-     * @param companyId
      * @param projectId
      * @return
      */
     @Override
-    public List<Role> listProjectRole(Long companyId, Long projectId) {
-        Assert.notNull(companyId, "companyId can not be null");
+    public List<Role> listProjectRole(Long projectId) {
         Assert.notNull(projectId, "projectId can not be null");
         return lambdaQuery()
-                .eq(Role::getCompanyId, companyId)
                 .eq(Role::getProjectId, projectId)
                 .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
                 .list();

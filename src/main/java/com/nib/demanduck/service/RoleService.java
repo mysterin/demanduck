@@ -27,5 +27,5 @@ public interface RoleService extends IService<Role> {
     List<Role> listProjectRoleByUserId(Long companyId, Long userId);
     List<Role> listSystemRole();
     List<Role> listCompanyRole(Long companyId);
-    List<Role> listProjectRole(Long companyId, Long projectId);
+    List<Role> listProjectRole(Long projectId);
 }
