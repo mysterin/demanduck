@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-31
+ * @since 2023-09-14
  */
 @Getter
 @Setter
@@ -33,16 +33,34 @@ public class Comment implements Serializable {
     private Long id;
 
     /**
-     * 类型, DEMAND_COMMENT=需求下评论, MISSION_COMMENT=任务下评论, COMMENT_REPLY=评论下回复
+     * 公司 ID
+     */
+    @TableField("company_id")
+    private Long companyId;
+
+    /**
+     * 项目 ID
+     */
+    @TableField("project_id")
+    private Long projectId;
+
+    /**
+     * 类型, DEMAND_COMMENT=需求下评论, MISSION_COMMENT=任务下评论, FLAW_COMMENT=缺陷下评论
      */
     @TableField("type")
     private String type;
 
     /**
-     * 被回复的记录 ID(需求 ID、任务 ID、根评论 ID)
+     * 被回复的业务 ID(需求 ID、任务 ID、缺陷 ID)
      */
     @TableField("business_id")
     private Long businessId;
+
+    /**
+     * 根评论 ID
+     */
+    @TableField("root_comment_id")
+    private Long rootCommentId;
 
     /**
      * 被回复的具体评论 ID
@@ -51,11 +69,17 @@ public class Comment implements Serializable {
     private Long repliedCommentId;
 
     /**
+     * 是否有子评论，0=没有，1=有
+     */
+    @TableField("child_comment")
+    private Boolean childComment;
+
+    /**
      * 是否删除，0=未删除，1=已删除
      */
       @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
-    private Byte deleted;
+    private Boolean deleted;
 
     /**
      * 创建人

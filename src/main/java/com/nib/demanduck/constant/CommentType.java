@@ -8,6 +8,18 @@ package com.nib.demanduck.constant;
 public enum CommentType {
     DEMAND_COMMENT,
     MISSION_COMMENT,
-    COMMENT_REPLY,
+    FLAW_COMMENT,
     ;
+
+    /**
+     * 字符串转枚举
+     */
+    public static CommentType parse(String name) {
+        for (CommentType type : CommentType.values()) {
+            if (type.name().equals(name)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

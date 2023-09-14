@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-31
+ * @since 2023-09-14
  */
 @Getter
 @Setter
@@ -67,7 +67,7 @@ public class User implements Serializable {
      */
       @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
-    private Byte deleted;
+    private Boolean deleted;
 
     /**
      * 创建时间

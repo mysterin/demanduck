@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-08-31
+ * @since 2023-09-14
  */
 @Getter
 @Setter
@@ -39,7 +39,7 @@ public class Content implements Serializable {
     private Long businessId;
 
     /**
-     * 类型, DEMAND=需求, MISSION=任务, COMMENT=评论
+     * 类型, DEMAND=需求, MISSION=任务, FLAW=缺陷, COMMENT=评论
      */
     @TableField("type")
     private String type;
@@ -55,7 +55,7 @@ public class Content implements Serializable {
      */
       @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
-    private Byte deleted;
+    private Boolean deleted;
 
     /**
      * 创建人

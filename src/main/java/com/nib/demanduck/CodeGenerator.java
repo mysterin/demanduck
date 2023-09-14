@@ -3,7 +3,9 @@ package com.nib.demanduck;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.fill.Column;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * @author linxiaobin
@@ -14,13 +16,22 @@ public class CodeGenerator {
     public static void main(String[] args) {
         String username = args.length > 0 ? args[0] : "root";
         String password = args.length > 1 ? args[1] : "root";
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/demanduck?useUnicode=true&characterEncoding=utf8", username, password)
+        // tinyint(1) -> boolean
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/demanduck?useUnicode=true&characterEncoding=utf8&tinyInt1isBit=true", username, password)
                 .globalConfig(builder -> {
                     builder.author("linxiaobin")
                             .commentDate("yyyy-MM-dd")
                             .fileOverride()
                             .outputDir("src/main/java")
                             .disableOpenDir();
+                })
+                .dataSourceConfig(builder -> {
+                    builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                        if (metaInfo.getJdbcType().equals(JdbcType.TINYINT)) {
+                            return DbColumnType.BOOLEAN;
+                        }
+                        return typeRegistry.getColumnType(metaInfo);
+                    });
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.nib.demanduck")
@@ -33,16 +44,16 @@ public class CodeGenerator {
                     builder
                             // 表名
                             .addInclude(
-//                                    "nib_assign_user",
-//                                    "nib_comment",
-//                                    "nib_company",
-//                                    "nib_content",
-//                                    "nib_demand",
-                                    "nib_flaw"
-//                                    "nib_mission",
-//                                    "nib_project",
-//                                    "nib_user",
-//                                    "nib_role"
+                                    "nib_assign_user",
+                                    "nib_comment",
+                                    "nib_company",
+                                    "nib_content",
+                                    "nib_demand",
+                                    "nib_flaw",
+                                    "nib_mission",
+                                    "nib_project",
+                                    "nib_user",
+                                    "nib_role"
                             )
                             // 前缀
                             .addTablePrefix("nib_")

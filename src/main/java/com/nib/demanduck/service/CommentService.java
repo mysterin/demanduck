@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-08-28 05:30:36
  */
 public interface CommentService extends IService<Comment> {
-
+    void saveComment(Comment comment);
 }

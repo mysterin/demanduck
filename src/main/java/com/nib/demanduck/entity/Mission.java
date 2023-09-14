@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-09-04
+ * @since 2023-09-14
  */
 @Getter
 @Setter
@@ -65,8 +65,8 @@ public class Mission implements Serializable {
     /**
      * 状态, NOT_PROCESS=未处理, PROCESSING=处理中, PROCESSED=处理完成, REFUSE=已拒绝
      */
-    @TableField("status")
-    private String status;
+    @TableField("state")
+    private String state;
 
     /**
      * 开始时间
@@ -85,7 +85,7 @@ public class Mission implements Serializable {
      */
       @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
-    private Byte deleted;
+    private Boolean deleted;
 
     /**
      * 创建人
