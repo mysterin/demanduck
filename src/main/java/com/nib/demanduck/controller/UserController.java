@@ -2,7 +2,7 @@ package com.nib.demanduck.controller;
 
 import com.nib.demanduck.request.user.CreateUserRequest;
 import com.nib.demanduck.request.user.LoginUserRequest;
-import com.nib.demanduck.response.user.LoginUserData;
+import com.nib.demanduck.response.user.LoginUserDTO;
 import com.nib.demanduck.response.Response;
 import com.nib.demanduck.entity.User;
 import com.nib.demanduck.exception.ServiceException;
@@ -51,8 +51,8 @@ public class UserController {
      */
     @PostMapping("/login")
     public Response<User> login(@RequestBody @Validated LoginUserRequest request) throws ServiceException {
-        LoginUserData loginUserData = userService.login(request.getEmail(), request.getPassword());
-        return Response.success(loginUserData);
+        LoginUserDTO loginUserDTO = userService.login(request.getEmail(), request.getPassword());
+        return Response.success(loginUserDTO);
     }
 
     /**

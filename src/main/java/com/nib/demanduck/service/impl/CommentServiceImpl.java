@@ -1,22 +1,22 @@
 package com.nib.demanduck.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nib.demanduck.constant.CommentType;
-import com.nib.demanduck.entity.Comment;
-import com.nib.demanduck.entity.Demand;
-import com.nib.demanduck.entity.Flaw;
-import com.nib.demanduck.entity.Mission;
+import com.nib.demanduck.constant.EntityType;
+import com.nib.demanduck.entity.*;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.exception.ServiceException;
 import com.nib.demanduck.mapper.CommentMapper;
-import com.nib.demanduck.service.CommentService;
+import com.nib.demanduck.response.comment.CommentDTO;
+import com.nib.demanduck.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.nib.demanduck.service.DemandService;
-import com.nib.demanduck.service.FlawService;
-import com.nib.demanduck.service.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * <p>
@@ -35,15 +35,56 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private MissionService missionService;
     @Autowired
     private FlawService flawService;
+    @Autowired
+    private ContentService contentService;
 
     @Override
-    public void saveComment(Comment comment) {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveComment(Comment comment, String content) {
         populateProperty(comment);
         if (Objects.isNull(comment.getId())) {
             this.save(comment);
         } else {
             this.updateById(comment);
         }
+        // 保存内容
+        contentService.saveContent(comment.getId(), EntityType.COMMENT, content);
+    }
+
+    @Override
+    public IPage<CommentDTO> listComment(Comment comment, long pageNo, long pageSize) {
+        return lambdaQuery().eq(Comment::getProjectId, comment.getProjectId())
+                .eq(Comment::getBusinessId, comment.getBusinessId())
+                .eq(Comment::getType, comment.getType())
+                .orderByDesc(Comment::getId)
+                .page(new Page<>(pageNo, pageSize))
+                .convert(transferDTOAndFillContent());
+    }
+
+    private Function<Comment, CommentDTO> transferDTOAndFillContent() {
+        return comment -> {
+            Content content = contentService.getByBusinessId(comment.getId(), EntityType.COMMENT);
+            CommentDTO commentDTO = new CommentDTO()
+                    .setCommentId(comment.getId())
+                    .setCompanyId(comment.getCompanyId())
+                    .setProjectId(comment.getProjectId())
+                    .setType(comment.getType())
+                    .setBusinessId(comment.getBusinessId())
+                    .setRootCommentId(comment.getRootCommentId())
+                    .setRepliedCommentId(comment.getRepliedCommentId())
+                    .setChildComment(comment.getChildComment())
+                    .setContent(content.getContent());
+            return commentDTO;
+        };
+    }
+
+    @Override
+    public IPage<CommentDTO> listReplyComment(Comment comment, long pageNo, long pageSize) {
+        return lambdaQuery().eq(Comment::getProjectId, comment.getProjectId())
+                .eq(Comment::getRootCommentId, comment.getRootCommentId())
+                .orderByDesc(Comment::getId)
+                .page(new Page<>(pageNo, pageSize))
+                .convert(transferDTOAndFillContent());
     }
 
     /**
@@ -53,6 +94,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      */
     public void populateProperty(Comment comment) {
         CommentType commentType = CommentType.parse(comment.getType());
+        // 设置公司 ID 和项目 ID
         Long companyId;
         Long projectId;
         switch (commentType) {
@@ -77,9 +119,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setCompanyId(companyId);
         comment.setProjectId(projectId);
 
+        // 是回复评论
         if (Objects.nonNull(comment.getRepliedCommentId())) {
             Comment repliedComment = getById(comment.getRepliedCommentId());
+            // 父评论设置为有子评论
+            if (!repliedComment.getChildComment()) {
+                repliedComment.setChildComment(true);
+                updateById(repliedComment);
+            }
 
+            // 设置根评论 id
+            Long rootCommentId = Objects.isNull(repliedComment.getRootCommentId()) ? repliedComment.getId() : repliedComment.getRootCommentId();
+            comment.setRootCommentId(rootCommentId);
         }
     }
 

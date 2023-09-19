@@ -1,6 +1,6 @@
 package com.nib.demanduck.service.impl;
 
-import com.nib.demanduck.response.user.LoginUserData;
+import com.nib.demanduck.response.user.LoginUserDTO;
 import com.nib.demanduck.constant.AccessSource;
 import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;
@@ -56,7 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return
      */
     @Override
-    public LoginUserData login(String email, String password) throws ServiceException {
+    public LoginUserDTO login(String email, String password) throws ServiceException {
         User user = getByMobileOrEmail(null, email);
         if (user == null) {
             throw new ServiceException(ErrorCode.USER_NOT_EXIST);
@@ -70,10 +70,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         deleteToken(user.getId());
         // 生成 token
         String token = generateToken(user.getId());
-        LoginUserData loginUserData = new LoginUserData();
-        BeanUtils.copyProperties(user, loginUserData);
-        loginUserData.setToken(token);
-        return loginUserData;
+        LoginUserDTO loginUserDTO = new LoginUserDTO();
+        BeanUtils.copyProperties(user, loginUserDTO);
+        loginUserDTO.setToken(token);
+        return loginUserDTO;
     }
 
     /**
