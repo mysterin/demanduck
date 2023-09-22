@@ -17,7 +17,8 @@
 </template>
 
 <script>
-// import {login} from '@/api/user';
+import store from '@/store';
+import {login} from '@/api/user';
 export default {
   name: 'loginView',
   data() {
@@ -30,6 +31,12 @@ export default {
   },
   methods: {
     submit() {
+      login(this.form).then(res => {
+        store.commit('setToken', res.data.token)
+        this.$router.push({path: '/'})
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
