@@ -8,6 +8,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(request => {
     request.headers.Token = store.state.token;
+    return request;
 }, error => {
     console.log('error in request');
     return Promise.reject(error);

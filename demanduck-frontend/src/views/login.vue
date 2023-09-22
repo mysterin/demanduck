@@ -3,7 +3,7 @@
     <el-col :span="6" align="middle">
       <!-- element 表单登录-->
       <el-form ref="form" :model="form" label-width="80px" class="login-form" label-position="top">
-        <h3>欢迎使用 demanduck 需求鸭</h3>
+        <h3>欢迎使用</h3>
         <el-form-item prop="email">
           <el-input prefix-icon="User" v-model="form.email" placeholder="请填写邮箱" autocomplete="off"></el-input>
         </el-form-item>
