@@ -4,11 +4,11 @@
       <!-- element 表单登录-->
       <el-form ref="form" :model="form" label-width="80px" class="login-form" label-position="top">
         <h3>欢迎使用 demanduck 需求鸭</h3>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="form.email" autocomplete="off"></el-input>
+        <el-form-item prop="email">
+          <el-input prefix-icon="User" v-model="form.email" placeholder="请填写邮箱" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
+        <el-form-item prop="password">
+          <el-input prefix-icon="Lock" type="password" v-model="form.password" placeholder="请填写密码" autocomplete="off"></el-input>
         </el-form-item>
         <el-button type="primary" @click="submit" class="login-button">登录</el-button>
       </el-form>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {login} from '@/api/login';
+// import {login} from '@/api/user';
 export default {
   name: 'loginView',
   data() {
