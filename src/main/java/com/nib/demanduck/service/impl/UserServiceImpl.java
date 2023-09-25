@@ -59,12 +59,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public LoginUserDTO login(String email, String password) throws ServiceException {
         User user = getByMobileOrEmail(null, email);
         if (user == null) {
-            throw new ServiceException(ErrorCode.USER_NOT_EXIST);
+            throw new ServiceException(ErrorCode.USER_PASSWORD_ERROR);
         }
         String salt = user.getSalt();
         String sha1Hex = DigestUtils.sha1Hex(password + salt);
         if (!StringUtils.equals(sha1Hex, user.getPassword())) {
-            throw new ServiceException(ErrorCode.PASSWORD_ERROR);
+            throw new ServiceException(ErrorCode.USER_PASSWORD_ERROR);
         }
         // 先删除已有 token
         deleteToken(user.getId());

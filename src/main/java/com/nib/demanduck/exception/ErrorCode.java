@@ -17,7 +17,7 @@ public enum ErrorCode {
     INVALID_PASSWORD(1004, "密码错误"),
     USER_EXIST(1005, "用户已存在"),
     USER_NOT_EXIST(1006, "用户不存在"),
-    PASSWORD_ERROR(1007, "密码错误"),
+    USER_PASSWORD_ERROR(1007, "账户或密码错误"),
     USER_NOT_LOGIN(1008, "用户未登录"),
     USER_PERMISSION_ERROR(1009, "用户无权限"),
     ;
