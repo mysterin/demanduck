@@ -35,8 +35,8 @@ export default {
     submit() {
       login(this.form).then(res => {
         if (res) {
-          store.commit('setToken', res.data.token)
-          this.$router.push({path: '/company'})
+          store.commit('setUser', res.data)
+          this.$router.push({path: '/company-list'})
         }
       });
     }

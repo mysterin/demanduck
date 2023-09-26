@@ -13,7 +13,7 @@ const routes = [
             notAuth: true
         }
     }, {
-        path: '/company',
+        path: '/company-list',
         name: 'companyList',
         component: () => import('../views/company/list'),
         meta: {
@@ -24,6 +24,14 @@ const routes = [
         path: '/company/:companyId',
         name: 'company',
         component: () => import('../views/company'),
+    }, {
+        path: '/project/:projectId',
+        name: 'project',
+        component: () => import('../views/project'),
+    }, {
+        path: '/workspace/:companyId',
+        name: 'workspace',
+        component: () => import('../views/workspace'),
     }
 ]
 
@@ -37,6 +45,15 @@ router.beforeEach((to, from, next) => {
         next('/login')
     } else {
         next()
+    }
+})
+
+router.afterEach((to) => {
+    // 获取路由上的 companyId
+    const companyId = to.params.companyId
+    if (companyId) {
+        // 获取公司信息
+        store.commit('setCompanyId', companyId)
     }
 })
 

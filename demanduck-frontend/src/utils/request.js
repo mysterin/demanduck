@@ -30,7 +30,7 @@ instance.interceptors.response.use(response => {
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
-            store.commit('setToken', '');
+            store.commit('setUser', '');
             location.reload();
         })
         return;

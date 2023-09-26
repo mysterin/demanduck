@@ -1,15 +1,42 @@
 <template>
-  <div>
-    <h1>公司列表</h1>
-  </div>
+  <el-row class="project-list">
+    <el-col :span="12" :offset="6">
+      <el-card class="project-box" v-for="project in projectList" :key="project.id" shadow="hover" @click="handleProjectClick(project)">
+        <img :src="project.logo"/>
+        <div>
+          <span>{{ project.name }}</span>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
+import store from '@/store';
 export default {
-  name: "companyView"
+  name: "companyView",
+  data() {
+    return {
+      companyId: store.state.companyId,
+      projectList: store.state.projectList
+    }
+  },
+  methods: {
+    handleProjectClick(project) {
+      this.$router.push({path: '/project/' + project.id})
+    }
+  }
 }
 </script>
 
 <style scoped>
 
+.project-box {
+  height: 150px;
+  width: 150px;
+}
+
+.project-box img {
+  width: 100%;
+}
 </style>

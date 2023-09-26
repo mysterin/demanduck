@@ -50,7 +50,7 @@ public class UserController {
      * @throws ServiceException
      */
     @PostMapping("/login")
-    public Response<User> login(@RequestBody @Validated LoginUserRequest request) throws ServiceException {
+    public Response<LoginUserDTO> login(@RequestBody @Validated LoginUserRequest request) throws ServiceException {
         LoginUserDTO loginUserDTO = userService.login(request.getEmail(), request.getPassword());
         return Response.success(loginUserDTO);
     }

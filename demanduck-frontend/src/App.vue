@@ -1,10 +1,25 @@
 <template>
-  <nav v-if="!$route.meta.hideNav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login">login</router-link>
-  </nav>
-  <router-view/>
+  <el-row>
+    <el-col :span="4">
+      <nib-nav>
+      </nib-nav>
+    </el-col>
+    <el-col :span="20">
+      <router-view/>
+    </el-col>
+  </el-row>
 </template>
+
+<script>
+import nav from './components/nav'
+
+export default {
+  name: 'app',
+  components: {
+    'nibNav': nav
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -15,16 +30,4 @@
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>

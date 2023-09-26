@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getCompanyList(data) {
+export function getProjectList(data) {
     return request({
-        url: '/company/list',
+        url: '/project/list',
         method: 'post',
         data
     });
