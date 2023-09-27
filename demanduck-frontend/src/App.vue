@@ -1,23 +1,13 @@
 <template>
-  <el-row>
-    <el-col :span="4">
-      <nib-nav>
-      </nib-nav>
-    </el-col>
-    <el-col :span="20">
-      <router-view/>
-    </el-col>
-  </el-row>
+  <div class="common-layout">
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import nav from './components/nav'
 
 export default {
   name: 'app',
-  components: {
-    'nibNav': nav
-  }
 }
 </script>
 

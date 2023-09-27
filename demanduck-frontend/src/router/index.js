@@ -3,23 +3,17 @@ import store from '../store'
 
 const routes = [
     {
-        path: '/login',
-        name: 'login',
-        component: () => import('../views/login'),
+        path: '/user/login',
+        name: 'userLogin',
+        component: () => import('../views/user/login'),
         meta: {
-            // 隐藏导航
-            hideNav: true,
             // 不需要登录
             notAuth: true
         }
     }, {
-        path: '/company-list',
-        name: 'companyList',
-        component: () => import('../views/company/list'),
-        meta: {
-            // 隐藏导航
-            hideNav: true,
-        }
+        path: '/user/detail',
+        name: 'userDetail',
+        component: () => import('../views/user/detail'),
     }, {
         path: '/company/:companyId',
         name: 'company',
@@ -28,6 +22,25 @@ const routes = [
         path: '/project/:projectId',
         name: 'project',
         component: () => import('../views/project'),
+        children: [
+            {
+                path: 'list',
+                name: 'projectList',
+                component: () => import('../views/project/list'),
+            }, {
+                path: 'demand',
+                name: 'demand',
+                component: () => import('../views/demand'),
+            }, {
+                path: 'mission',
+                name: 'mission',
+                component: () => import('../views/mission'),
+            }, {
+                path: 'flaw',
+                name: 'flaw',
+                component: () => import('../views/flaw'),
+            }
+            ]
     }, {
         path: '/workspace/:companyId',
         name: 'workspace',
@@ -42,18 +55,24 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if (!to.meta.notAuth && !store.state.token) {
-        next('/login')
+        next('/user/login')
+    } else if (!to.meta.notAuth && !store.state.companyId) {
+        next('/company-list')
     } else {
         next()
     }
 })
 
 router.afterEach((to) => {
-    // 获取路由上的 companyId
     const companyId = to.params.companyId
+    const projectId = to.params.projectId
     if (companyId) {
         // 获取公司信息
         store.commit('setCompanyId', companyId)
+    }
+    if (projectId) {
+        // 获取项目信息
+        store.commit('setProjectId', projectId)
     }
 })
 

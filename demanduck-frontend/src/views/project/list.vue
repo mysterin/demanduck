@@ -1,6 +1,6 @@
 <template>
   <el-row class="project-list">
-    <el-col :span="12" :offset="6">
+    <el-col :span="12">
       <el-card class="project-box" v-for="project in projectList" :key="project.id" shadow="hover" @click="handleProjectClick(project)">
         <img :src="project.logo"/>
         <div>
@@ -32,8 +32,8 @@ export default {
 <style scoped>
 
 .project-box {
-  height: 150px;
-  width: 150px;
+  height: 120px;
+  width: 120px;
 }
 
 .project-box img {
