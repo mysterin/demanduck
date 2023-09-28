@@ -1,5 +1,5 @@
 <template>
-  <el-menu mode="horizontal" router="true">
+  <el-menu mode="horizontal" router :default-active="activeIndex">
     <el-menu-item :index="'/project/' + projectId + '/demand'">
       <span>需求</span>
     </el-menu-item>
@@ -19,8 +19,12 @@ export default {
   data() {
     return {
       companyId: store.state.companyId,
-      projectId: store.state.projectId
+      projectId: store.state.projectId,
+      activeIndex: this.$route.path
     }
+  },
+  mounted() {
+    console.log(1, this.activeIndex)
   }
 }
 </script>

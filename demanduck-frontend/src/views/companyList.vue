@@ -1,7 +1,8 @@
 <template>
   <el-row class="company-list">
     <el-col :span="12">
-      <el-card class="company-box" v-for="company in companyList" :key="company.id" shadow="hover" @click="handleCompanyClick(company)">
+      <el-card class="company-box" v-for="company in companyList" :key="company.id"
+               shadow="hover" @click="handleCompanyClick(company)">
         <img :src="company.logo"/>
         <div>
           <span>{{ company.name }}</span>
@@ -28,20 +29,17 @@ export default {
   },
   methods: {
     handleCompanyClick(company) {
-      this.$router.push({path: '/company/' + company.id})
+      this.$router.push({path: '/' + company.id + "/project-list"})
     }
   }
 }
 </script>
 
 <style scoped>
-.company-list {
-  margin-top: 50px;
-}
-
 .company-box {
   height: 150px;
   width: 150px;
+  cursor: pointer;
 }
 
 .company-box img {

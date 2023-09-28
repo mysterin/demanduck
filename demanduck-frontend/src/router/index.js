@@ -5,46 +5,55 @@ const routes = [
     {
         path: '/user/login',
         name: 'userLogin',
-        component: () => import('../views/user/login'),
+        component: () => import('../views/userLogin'),
         meta: {
             // 不需要登录
             notAuth: true
         }
     }, {
-        path: '/user/detail',
-        name: 'userDetail',
-        component: () => import('../views/user/detail'),
-    }, {
-        path: '/company/:companyId',
-        name: 'company',
-        component: () => import('../views/company'),
-    }, {
-        path: '/project/:projectId',
-        name: 'project',
-        component: () => import('../views/project'),
+        path: '/',
+        name: 'containerMain',
+        component: () => import('../views/containerMain'),
+        redirect: '/company-list',
         children: [
             {
-                path: 'list',
+                path: '/:companyId/workspace',
+                name: 'workspace',
+                component: () => import('../views/workspace'),
+            }, {
+                path: '/company-list',
+                name: 'companyList',
+                component: () => import('../views/companyList'),
+            }, {
+                path: '/:companyId/project-list',
                 name: 'projectList',
-                component: () => import('../views/project/list'),
+                component: () => import('../views/projectList'),
             }, {
-                path: 'demand',
-                name: 'demand',
-                component: () => import('../views/demand'),
+                path: '/project/:projectId',
+                name: 'project',
+                component: () => import('../views/containerProject'),
+                redirect: {name: 'demand'},
+                children: [
+                    {
+                        path: 'demand',
+                        name: 'demand',
+                        component: () => import('../views/demand'),
+                    }, {
+                        path: 'mission',
+                        name: 'mission',
+                        component: () => import('../views/mission'),
+                    }, {
+                        path: 'flaw',
+                        name: 'flaw',
+                        component: () => import('../views/flaw'),
+                    },
+                ]
             }, {
-                path: 'mission',
-                name: 'mission',
-                component: () => import('../views/mission'),
-            }, {
-                path: 'flaw',
-                name: 'flaw',
-                component: () => import('../views/flaw'),
+                path: '/user/detail',
+                name: 'userDetail',
+                component: () => import('../views/userDetail'),
             }
             ]
-    }, {
-        path: '/workspace/:companyId',
-        name: 'workspace',
-        component: () => import('../views/workspace'),
     }
 ]
 

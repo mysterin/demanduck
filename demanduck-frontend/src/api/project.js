@@ -7,3 +7,11 @@ export function getProjectList(data) {
         data
     });
 }
+
+export function createProject(data) {
+    return request({
+        url: '/project/create',
+        method: 'post',
+        data
+    });
+}

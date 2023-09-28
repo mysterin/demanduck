@@ -1,12 +1,12 @@
 <template>
   <el-menu class="nav-menu" router :collapse="isCollapsed" title="工作台">
-    <el-menu-item :index="'/workspace/' + companyId">
+    <el-menu-item :index="'/' + companyId + '/workspace'">
       <el-icon>
         <Monitor/>
       </el-icon>
       <span>工作台</span>
     </el-menu-item>
-    <el-sub-menu index="project" title="项目">
+    <el-sub-menu index="project">
       <template #title>
         <el-icon>
           <Menu/>
@@ -19,7 +19,7 @@
         </el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
-    <el-sub-menu index="setting" title="设置">
+    <el-sub-menu index="setting">
       <template #title>
         <el-icon>
           <Setting/>
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import {getProjectList} from "@/api/project";
 import store from '@/store';
 
 export default {
@@ -47,18 +46,16 @@ export default {
   data() {
     return {
       isCollapsed: true,
-      companyId: store.state.companyId,
-      projectList: []
     };
   },
-  mounted() {
-    if (this.companyId) {
-      getProjectList({companyId: this.companyId}).then(res => {
-        this.projectList = res.list;
-        store.commit('setProjectList', res.list);
-      });
+  computed: {
+    companyId() {
+      return store.state.companyId;
+    },
+    projectList() {
+      return store.state.projectList;
     }
-  }
+  },
 }
 </script>
 
