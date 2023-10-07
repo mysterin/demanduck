@@ -79,4 +79,13 @@ public class ProjectController {
         return Response.success();
     }
 
+    /**
+     * 查询项目详情接口
+     */
+    @PostMapping("/get")
+    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    public Response<Project> get(@RequestBody @Validated BaseProjectRequest request) {
+        return Response.success(projectService.getById(request.getProjectId()));
+    }
+
 }

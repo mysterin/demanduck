@@ -14,14 +14,14 @@ export default createStore({
     mutations: {
         setUser(state, user) {
             user = user || {};
-            state.userId = user.id;
-            localStorage.setItem('userId', user.id);
-            state.username = user.username;
-            localStorage.setItem('username', user.username);
-            state.email = user.email;
-            localStorage.setItem('email', user.email);
-            state.token = user.token;
-            localStorage.setItem('token', user.token);
+            state.userId = user.id || '';
+            localStorage.setItem('userId', state.userId);
+            state.username = user.username || '';
+            localStorage.setItem('username', state.username);
+            state.email = user.email || '';
+            localStorage.setItem('email', state.email);
+            state.token = user.token || '';
+            localStorage.setItem('token', state.token);
         },
         setCompanyId(state, companyId) {
             state.companyId = companyId;

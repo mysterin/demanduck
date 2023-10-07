@@ -43,7 +43,9 @@ import {ref} from 'vue';
 import store from '@/store';
 import {getProjectList, createProject} from "@/api/project";
 import {ElMessage} from "element-plus";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const companyId = ref(store.state.companyId);
 const projectList = ref([]);
 const createProjectDialog = ref(false);
@@ -62,14 +64,18 @@ const rules = ref({
   ]
 });
 
-getProjectList({companyId: companyId.value}).then(res => {
-  projectList.value = res.list;
-  store.commit('setProjectList', res.list);
-});
+const init = () => {
+  getProjectList({companyId: companyId.value}).then(res => {
+    projectList.value = res.list;
+    store.commit('setProjectList', res.list);
+  });
+}
+
+init();
 
 const handleProjectClick = (project) => {
   store.commit('setProjectId', project.id);
-  this.$router.push({path: '/project/' + project.id})
+  router.push({path: '/project/' + project.id})
 }
 
 const handleCreateDialog = () => {
@@ -87,6 +93,7 @@ const handleCreateProject = () => {
                 message: '创建成功',
                 type: 'success'
               });
+              init();
             }
             createProjectDialog.value = false;
           })

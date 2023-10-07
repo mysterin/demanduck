@@ -24,7 +24,9 @@ export default {
   },
   mounted() {
     getCompanyList().then(res => {
-      this.companyList = res.list;
+      if (res) {
+        this.companyList = res.list;
+      }
     });
   },
   methods: {

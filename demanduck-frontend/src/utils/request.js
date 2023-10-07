@@ -24,8 +24,8 @@ instance.interceptors.request.use(request => {
 instance.interceptors.response.use(response => {
     const res = response.data;
     const code = res.code;
-    if (code === 1002) {
-        ElMessageBox.confirm('登录已过期，请重新登录', '提示', {
+    if (code === 1002 || code === 1008) {
+        ElMessageBox.confirm('用户未登录, 请重新登录', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'

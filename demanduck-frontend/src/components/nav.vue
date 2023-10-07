@@ -38,25 +38,23 @@
   </el-menu>
 </template>
 
-<script>
+<script setup>
 import store from '@/store';
+import { ref, computed } from "vue";
+import { getProjectList } from "@/api/project";
 
-export default {
-  name: "navView",
-  data() {
-    return {
-      isCollapsed: true,
-    };
-  },
-  computed: {
-    companyId() {
-      return store.state.companyId;
-    },
-    projectList() {
-      return store.state.projectList;
-    }
-  },
+const isCollapsed = ref(true);
+const companyId = computed(() => store.state.companyId);
+const projectList = computed(() => store.state.projectList);
+
+const init = function () {
+  if (companyId.value && projectList.value.length <= 0) {
+    getProjectList({companyId: companyId.value}).then(res => {
+      store.commit('setProjectList', res.list);
+    });
+  }
 }
+init();
 </script>
 
 <style scoped>
