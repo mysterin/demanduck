@@ -19,7 +19,7 @@
 - 版本控制：Git
 - 代码托管：Github
 
-## 启动
+## 启动命令
 ```shell
 mvn clean install
 cd target
@@ -56,3 +56,6 @@ java -jar demanduck-0.0.1-SNAPSHOT.jar --spring.port=8045
 
 ### 项目管理
 - 增删改查
+
+## 其他
+- 联系邮箱：demanduck@yeah.net

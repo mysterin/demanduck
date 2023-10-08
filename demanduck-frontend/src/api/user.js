@@ -6,3 +6,30 @@ export function login(data) {
         data
     });
 }
+
+export function logout() {
+    return request({
+        url: '/user/logout'
+    });
+}
+
+export function sendValidCode(data) {
+    return request({
+        url: '/user/sendValidCode',
+        data
+    });
+}
+
+export function resetPassword(data) {
+    return request({
+        url: '/user/resetPassword',
+        data
+    });
+}
+
+export function register(data) {
+    return request({
+        url: '/user/register',
+        data
+    });
+}

@@ -20,6 +20,26 @@ spring:
       timeout: 10000
   jackson:
     default-property-inclusion: non_null
+  mail:
+    protocol: smtp
+    host: smtp.yeah.net
+    port: 465
+    username: demanduck@yeah.net
+    password: YNBUAAJKRVXZUOSG
+    properties:
+      mail:
+        debug: true
+        mime:
+          splitlongparameters: false
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          auth: true
+          starttls:
+              enable: true
+              required: true
+    default-encoding: utf-8
+    test-connection: false
 logging:
   level:
     root: info

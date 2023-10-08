@@ -20,6 +20,7 @@ public enum ErrorCode {
     USER_PASSWORD_ERROR(1007, "账户或密码错误"),
     USER_NOT_LOGIN(1008, "用户未登录"),
     USER_PERMISSION_ERROR(1009, "用户无权限"),
+    VALID_CODE_ERROR(1010, "验证码错误"),
     ;
     private Integer code;
     private String msg;

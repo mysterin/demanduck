@@ -33,6 +33,10 @@
         <el-menu-item index="/user/detail">
           <span>个人信息</span>
         </el-menu-item>
+        <el-divider border-style="dashed"/>
+        <el-menu-item index="/user/logout">
+          <span>退出登录</span>
+        </el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
   </el-menu>

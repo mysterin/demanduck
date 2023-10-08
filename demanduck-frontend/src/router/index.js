@@ -52,8 +52,26 @@ const routes = [
                 path: '/user/detail',
                 name: 'userDetail',
                 component: () => import('../views/userDetail'),
+            }, {
+                path: '/user/logout',
+                name: 'userLogout',
+                component: () => import('../views/userLogout'),
             }
-            ]
+        ]
+    }, {
+        path: '/resetPassword',
+        name: 'resetPassword',
+        component: () => import('../views/resetPassword'),
+        meta: {
+            notAuth: true
+        }
+    }, {
+        path: '/register',
+        name: 'register',
+        component: () => import('../views/register'),
+        meta: {
+            notAuth: true
+        }
     }
 ]
 

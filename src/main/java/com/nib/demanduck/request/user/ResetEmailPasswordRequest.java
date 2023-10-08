@@ -13,18 +13,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2023/8/28 19:41
  */
 @Data
-public class CreateUserRequest extends BaseRequest {
-    /**
-     * 用户名称
-     */
-    @NotBlank(message = "用户名不能为空")
-    private String username;
-
-    /**
-     * 手机号
-     */
-    private String mobile;
-
+public class ResetEmailPasswordRequest extends BaseRequest {
     /**
      * 邮箱
      */
@@ -32,16 +21,16 @@ public class CreateUserRequest extends BaseRequest {
     @Email(message = "邮箱格式不正确")
     private String email;
     /**
-     * 验证码
-     */
-    @NotBlank(message = "验证码不能为空")
-    private String code;
-    /**
      * 场景
      */
     @NotBlank(message = "场景不能为空")
     private String scene;
 
+    /**
+     * 验证码
+     */
+    @NotBlank(message = "验证码不能为空")
+    private String code;
     /**
      * 密码
      */

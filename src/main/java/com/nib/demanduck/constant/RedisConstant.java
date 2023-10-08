@@ -11,6 +11,7 @@ public class RedisConstant {
      */
     public static final long TEN_SECOND = 10;
     public static final long ONE_MINUTE = 60;
+    public static final long FIVE_MINUTE = 60 * 5;
     public static final long TEN_MINUTE = 60 * 10;
     public static final long HALF_HOUR = 60 * 30;
     public static final long ONE_HOUR = 60 * 60;

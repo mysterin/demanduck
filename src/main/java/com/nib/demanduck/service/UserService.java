@@ -16,9 +16,11 @@ import com.nib.demanduck.response.user.LoginUserDTO;
 public interface UserService extends IService<User> {
     void register(User user) throws ServiceException;
 
-    LoginUserDTO login(String email, String password) throws ServiceException;
+    LoginUserDTO login(String email, String password);
 
     User getByToken(String token);
 
     void logout(String token);
+
+    void resetPassword(String email, String password);
 }

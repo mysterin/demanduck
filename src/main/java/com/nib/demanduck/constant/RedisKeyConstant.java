@@ -26,6 +26,12 @@ public class RedisKeyConstant {
      * {0} userId
      */
     public static final String SESSION_ID_TOKEN_KEY = "SESSION:ID:{0}";
+    /**
+     * 验证码缓存
+     * {0} email
+     * {1} scene
+     */
+    public static final String VALID_CODE_KEY = "VALID:CODE:{0}:{1}";
 
     public static String getKey(String key, Object...params) {
         if (Objects.isNull(params)) {

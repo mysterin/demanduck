@@ -56,7 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return
      */
     @Override
-    public LoginUserDTO login(String email, String password) throws ServiceException {
+    public LoginUserDTO login(String email, String password) {
         User user = getByMobileOrEmail(null, email);
         if (user == null) {
             throw new ServiceException(ErrorCode.USER_PASSWORD_ERROR);
@@ -102,6 +102,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public void logout(String token) {
         String key = RedisKeyConstant.getKey(RedisKeyConstant.SESSION_TOKEN_ID_KEY, token);
         redisUtils.del(key);
+    }
+
+    @Override
+    public void resetPassword(String email, String password) {
+        User user = getByMobileOrEmail(null, email);
+        if (user == null) {
+            throw new ServiceException(ErrorCode.USER_PASSWORD_ERROR);
+        }
+        // 生成新的盐
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        password = DigestUtils.sha1Hex(password + salt);
+        user.setPassword(password);
+        user.setSalt(salt);
+        baseMapper.updateById(user);
     }
 
     /**
