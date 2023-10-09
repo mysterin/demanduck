@@ -18,26 +18,15 @@ public enum RoleEnum {
      * 公司普通成员
      */
     COMPANY_MEMBER(1 << 2),
-    /**
-     * 项目管理员
-     */
-    PROJECT_ADMIN(1 << 3),
-    /**
-     * 项目普通成员
-     */
-    PROJECT_MEMBER(1 << 4),
 
     /**
      * 系统管理员和公司管理员
      */
     SYS_COM_ADMIN(SYSTEM_ADMIN.code | COMPANY_ADMIN.code),
     /**
-     * 系统管理员和公司管理员和项目管理员
+     * 系统管理员和公司成员
      */
-    SYS_COM_PRO_ADMIN(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | PROJECT_ADMIN.code),
-    SYS_COM_PRO_MEMBER(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | PROJECT_ADMIN.code | PROJECT_MEMBER.code),
-    COM_PRO_ADMIN(COMPANY_ADMIN.code | PROJECT_ADMIN.code),
-    PRO_ADMIN_MEMBER(PROJECT_ADMIN.code | PROJECT_MEMBER.code),
+    SYS_COM_ADMIN_MEMBER(SYSTEM_ADMIN.code | COMPANY_ADMIN.code | COMPANY_MEMBER.code),
     ;
 
     private int code;

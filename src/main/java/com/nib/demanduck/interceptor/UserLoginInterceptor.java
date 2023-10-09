@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 
 /**
  * @author linxiaobin
- * @Description
+ * @Description 登录拦截器
  * @date 2023/8/28 20:46
  */
 @Slf4j

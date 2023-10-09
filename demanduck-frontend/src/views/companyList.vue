@@ -1,6 +1,9 @@
 <template>
   <el-row class="company-list">
-    <el-col :span="12">
+    <el-col :span="12" :offset="6" v-if="companyList.length <= 0">
+      <el-empty description="暂无公司"/>
+    </el-col>
+    <el-col :span="12" v-if="companyList">
       <el-card class="company-box" v-for="company in companyList" :key="company.id"
                shadow="hover" @click="handleCompanyClick(company)">
         <img :src="company.logo"/>

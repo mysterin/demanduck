@@ -1,12 +1,12 @@
 <template>
-  <el-menu class="nav-menu" router :collapse="isCollapsed" title="工作台">
-    <el-menu-item :index="'/' + companyId + '/workspace'">
+  <el-menu class="nav-menu" router :collapse="isCollapsed">
+    <el-menu-item :index="'/' + companyId + '/workspace'" v-if="companyId" title="工作台">
       <el-icon>
         <Monitor/>
       </el-icon>
       <span>工作台</span>
     </el-menu-item>
-    <el-sub-menu index="project">
+    <el-sub-menu index="project" v-if="companyId" title="项目">
       <template #title>
         <el-icon>
           <Menu/>
@@ -19,7 +19,7 @@
         </el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
-    <el-sub-menu index="setting">
+    <el-sub-menu index="setting" title="设置">
       <template #title>
         <el-icon>
           <Setting/>
@@ -62,4 +62,10 @@ init();
 </script>
 
 <style scoped>
+.nav-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
 </style>

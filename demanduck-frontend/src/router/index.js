@@ -25,6 +25,10 @@ const routes = [
                 name: 'companyList',
                 component: () => import('../views/companyList'),
             }, {
+                path: '/:companyId/member',
+                name: 'member',
+                component: () => import('../views/companyMember.vue'),
+            }, {
                 path: '/:companyId/project-list',
                 name: 'projectList',
                 component: () => import('../views/projectList'),
@@ -82,9 +86,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if (!to.meta.notAuth && !store.state.token) {
-        next('/user/login')
-    } else if (!to.meta.notAuth && !store.state.companyId) {
-        next('/company-list')
+        next('/user/login?redirect=' + to.path)
     } else {
         next()
     }

@@ -26,14 +26,10 @@ public class MailUtils {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
-        message.setSubject(subject);
+        message.setSubject("【Demanduck】" + subject);
         message.setText(text);
         javaMailSender.send(message);
     }
 
-    public void sendValidCode(String to, String code) {
-        String subject = "验证码";
-        String text = "您的验证码为：" + code + "，请勿泄露给他人，5 分钟内有效。";
-        sendMail(to, subject, text);
-    }
+
 }

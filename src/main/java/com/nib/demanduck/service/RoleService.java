@@ -16,16 +16,14 @@ import java.util.List;
  */
 public interface RoleService extends IService<Role> {
 
-    List<Role> listUserRole(Long companyId, Long projectId, Long userId);
+    List<Role> listUserRole(Long companyId, Long userId);
 
-    Boolean hasPermission(Long companyId, Long projectId, Long userId, RoleEnum[] roleArray);
+    Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray);
 
     void saveRole(Role role);
     void deleteRole(Long userRoleId);
 
     List<Role> listCompanyRoleByUserId(Long userId);
-    List<Role> listProjectRoleByUserId(Long companyId, Long userId);
     List<Role> listSystemRole();
     List<Role> listCompanyRole(Long companyId);
-    List<Role> listProjectRole(Long projectId);
 }

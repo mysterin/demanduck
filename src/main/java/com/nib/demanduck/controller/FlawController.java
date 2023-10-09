@@ -41,7 +41,7 @@ public class FlawController {
      * 创建缺陷接口
      */
     @PostMapping("/create")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response create(@RequestBody @Validated CreateFlawRequest request) {
         Flaw flaw = new Flaw();
         BeanUtils.copyProperties(request, flaw);
@@ -56,7 +56,7 @@ public class FlawController {
      * 更新缺陷接口
      */
     @PostMapping("/update")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.FLAW)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.FLAW)
     public Response update(@RequestBody @Validated UpdateFlawRequest request) {
         Flaw flaw = new Flaw();
         BeanUtils.copyProperties(request, flaw);
@@ -72,7 +72,7 @@ public class FlawController {
      * 分页查询需求下缺陷列表
      */
     @PostMapping("/listDemandFlaw")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.DEMAND)
     public Response listDemandFlaw(@RequestBody @Validated BaseDemandPageRequest request) {
         return Response.success(flawService.listFlawByDemandId(request.getDemandId(), request.getPageNo(), request.getPageSize()));
     }

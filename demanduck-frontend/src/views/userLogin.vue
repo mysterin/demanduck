@@ -1,9 +1,8 @@
 <template>
   <el-row justify="center">
     <el-col :span="8" align="middle">
-      <!-- element 表单登录-->
       <div class="login-form">
-        <el-form ref="form" :model="form" label-width="80px" label-position="top">
+        <el-form :model="form" label-width="80px" label-position="top">
           <h3>欢迎使用</h3>
           <el-form-item prop="email">
             <el-input prefix-icon="User" v-model="form.email" placeholder="请填写邮箱" autocomplete="off"></el-input>
@@ -14,7 +13,6 @@
                       autocomplete="off"></el-input>
             <el-link :underline="false" type="info" href="/resetPassword">忘记密码</el-link>
           </el-form-item>
-
           <el-button type="primary" @click="submit" class="login-button">登录</el-button>
         </el-form>
       </div>
@@ -22,30 +20,27 @@
   </el-row>
 </template>
 
-<script>
+<script setup>
 import store from '@/store';
 import {login} from '@/api/user';
+import {useRouter, useRoute} from "vue-router";
+import { ref } from 'vue';
 
-export default {
-  name: 'loginView',
-  data() {
-    return {
-      form: {
-        email: '',
-        password: ''
-      }
+const form = ref({
+  email: '',
+  password: ''
+});
+
+const router = useRouter();
+const route = useRoute();
+const redirect = route.query.redirect || '/company-list';
+const submit = () => {
+  login(form.value).then(res => {
+    if (res) {
+      store.commit('setUser', res.data);
+      router.push({path: redirect});
     }
-  },
-  methods: {
-    submit() {
-      login(this.form).then(res => {
-        if (res) {
-          store.commit('setUser', res.data)
-          this.$router.push({path: '/company-list'})
-        }
-      });
-    }
-  }
+  });
 }
 </script>
 

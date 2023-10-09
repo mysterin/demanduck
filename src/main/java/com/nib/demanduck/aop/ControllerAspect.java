@@ -23,7 +23,7 @@ import java.util.Objects;
 
 /**
  * @author linxiaobin
- * @Description
+ * @Description 控制器权限校验
  * @date 2023/8/30 14:17
  */
 @Aspect
@@ -78,7 +78,6 @@ public class ControllerAspect {
                 if (Objects.nonNull(demandId)) {
                     Demand demand = demandService.getById(demandId);
                     companyId = demand.getCompanyId();
-                    projectId = demand.getProjectId();
                 }
                 break;
             case MISSION:
@@ -86,7 +85,6 @@ public class ControllerAspect {
                 if (Objects.nonNull(missionId)) {
                     Mission mission = missionService.getById(missionId);
                     companyId = mission.getCompanyId();
-                    projectId = mission.getProjectId();
                 }
                 break;
             case FLAW:
@@ -94,7 +92,6 @@ public class ControllerAspect {
                 if (Objects.nonNull(flawId)) {
                     Flaw flaw = flawService.getById(flawId);
                     companyId = flaw.getCompanyId();
-                    projectId = flaw.getProjectId();
                 }
                 break;
             default:
@@ -102,7 +99,7 @@ public class ControllerAspect {
                 throw new ServiceException(ErrorCode.SYSTEM_ERROR);
 
         }
-        if (!roleService.hasPermission(companyId, projectId, userId, roleEnum)) {
+        if (!roleService.hasPermission(companyId, userId, roleEnum)) {
             throw new ServiceException(ErrorCode.USER_PERMISSION_ERROR);
         }
     }

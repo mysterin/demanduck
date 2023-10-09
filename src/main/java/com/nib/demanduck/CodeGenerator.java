@@ -17,7 +17,7 @@ public class CodeGenerator {
         String username = "root";
         String password = "123456";
         // tinyint(1) -> boolean
-        FastAutoGenerator.create("jdbc:mysql://172.22.116.156:3306/demanduck?useUnicode=true&characterEncoding=utf8", username, password)
+        FastAutoGenerator.create("jdbc:mysql://inner.wsl.com:3306/demanduck?useUnicode=true&characterEncoding=utf8", username, password)
                 .globalConfig(builder -> {
                     builder.author("linxiaobin")
                             .commentDate("yyyy-MM-dd")
@@ -36,15 +36,15 @@ public class CodeGenerator {
                     builder
                             // 表名
                             .addInclude(
-                                    "nib_assign_user",
-                                    "nib_comment",
-                                    "nib_company",
-                                    "nib_content",
-                                    "nib_demand",
-                                    "nib_flaw",
-                                    "nib_mission",
-                                    "nib_project",
-                                    "nib_user",
+//                                    "nib_assign_user",
+//                                    "nib_comment",
+//                                    "nib_company",
+//                                    "nib_content",
+//                                    "nib_demand",
+//                                    "nib_flaw",
+//                                    "nib_mission",
+//                                    "nib_project",
+//                                    "nib_user",
                                     "nib_role"
                             )
                             // 前缀

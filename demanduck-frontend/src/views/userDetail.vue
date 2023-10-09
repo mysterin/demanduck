@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="8">
+    <el-col :span="8" :offset="8">
       <el-form :model="user" label-width="80px">
         <el-form-item label="用户 ID">
           <el-input v-model="user.userId"></el-input>
@@ -10,9 +10,6 @@
         </el-form-item>
         <el-form-item label="邮箱">
           <el-input v-model="user.email"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="user.mobile"></el-input>
         </el-form-item>
       </el-form>
     </el-col>

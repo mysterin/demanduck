@@ -17,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author linxiaobin
- * @since 2023-09-15
+ * @since 2023-10-09
  */
 @Getter
 @Setter
@@ -43,12 +43,6 @@ public class Role implements Serializable {
      */
     @TableField("company_id")
     private Long companyId;
-
-    /**
-     * 项目 ID
-     */
-    @TableField("project_id")
-    private Long projectId;
 
     /**
      * 角色, SYSTEM_ADMIN=系统管理员, COMPANY_ADMIN=公司管理员, COMPANY_MEMBER=公司普通成员,PROJECT_ADMIN=项目管理员,PROJECT_MEMBER=项目普通成员

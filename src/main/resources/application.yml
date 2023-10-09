@@ -1,3 +1,5 @@
+demanduck:
+  domain: http://localhost:8043
 server:
   port: 8045
   servlet:

@@ -43,7 +43,7 @@ public class DemandController {
      * 创建需求接口
      */
     @PostMapping("/create")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response create(@RequestBody @Validated CreateDemandRequest request) {
         Demand demand = new Demand();
         BeanUtils.copyProperties(request, demand);
@@ -58,7 +58,7 @@ public class DemandController {
      * 更新需求接口
      */
     @PostMapping("/update")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.DEMAND)
     public Response update(@RequestBody @Validated UpdateDemandRequest request) {
         Demand demand = new Demand();
         BeanUtils.copyProperties(request, demand);
@@ -74,7 +74,7 @@ public class DemandController {
      * 查询项目下的需求列表
      */
     @PostMapping("/list")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response<Demand> list(@RequestBody @Validated BaseProjectPageRequest request) {
         IPage<Demand> page = demandService.listDemandByProjectId(request.getProjectId(), request.getPageNo(), request.getPageSize());
         return Response.success(page);
@@ -84,7 +84,7 @@ public class DemandController {
      * 查询需求详情
      */
     @PostMapping("/get")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.DEMAND)
     public Response<Demand> get(@RequestBody @Validated BaseDemandRequest request) {
         Demand demand = demandService.getById(request.getDemandId());
         return Response.success(demand);

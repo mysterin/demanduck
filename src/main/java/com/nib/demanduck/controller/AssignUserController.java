@@ -35,7 +35,7 @@ public class AssignUserController {
      * 分配需求给用户
      */
     @PostMapping("/assignDemand")
-    @UserPermission(value = RoleEnum.PRO_ADMIN_MEMBER, entityType = EntityType.DEMAND)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.DEMAND)
     public Response assignDemand(@RequestBody @Validated AssignDemandRequest request) {
         assignUserService.assignDemand(request.getDemandId(), request.getUserIds());
         return Response.success();
@@ -45,7 +45,7 @@ public class AssignUserController {
      * 分配任务给用户
      */
     @PostMapping("/assignMission")
-    @UserPermission(value = RoleEnum.PRO_ADMIN_MEMBER, entityType = EntityType.MISSION)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.MISSION)
     public Response assignMission(@RequestBody @Validated AssignMissionRequest request) {
         assignUserService.assignMission(request.getMissionId(), request.getUserIds());
         return Response.success();
@@ -55,7 +55,7 @@ public class AssignUserController {
      * 分配缺陷给用户
      */
     @PostMapping("/assignFlaw")
-    @UserPermission(value = RoleEnum.PRO_ADMIN_MEMBER, entityType = EntityType.FLAW)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.FLAW)
     public Response assignFlaw(@RequestBody @Validated AssignFlawRequest request) {
         assignUserService.assignFlaw(request.getFlawId(), request.getUserIds());
         return Response.success();

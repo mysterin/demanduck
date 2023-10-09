@@ -44,8 +44,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     @RedisCache(key = RedisKeyConstant.USER_ROLE_KEY, ttl = RedisConstant.HALF_HOUR,
-            indexNames = {"companyId", "projectId", "userId"}, returnListType = Role.class)
-    public List<Role> listUserRole(Long companyId, Long projectId, Long userId) {
+            indexNames = {"companyId", "userId"}, returnListType = Role.class)
+    public List<Role> listUserRole(Long companyId, Long userId) {
         Objects.requireNonNull(userId);
         List<Role> list = new ArrayList<>();
         // 系统下角色
@@ -64,15 +64,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             list.addAll(companyRoleList);
         }
 
-        // 项目下角色
-        if (Objects.nonNull(projectId)) {
-            List<Role> projectRoleList = lambdaQuery()
-                    .eq(Role::getProjectId, projectId)
-                    .eq(Role::getUserId, userId)
-                    .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
-                    .list();
-            list.addAll(projectRoleList);
-        }
         return list;
     }
 
@@ -84,9 +75,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @return
      */
     @Override
-    public Boolean hasPermission(Long companyId, Long projectId, Long userId, RoleEnum[] roleArray) {
+    public Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray) {
         List<RoleEnum> list = applicationUtils.getBean(getClass())
-                .listUserRole(companyId, projectId, userId)
+                .listUserRole(companyId, userId)
                 .stream()
                 .map(userRole -> RoleEnum.getByRole(userRole.getRole()))
                 .filter(Objects::nonNull)
@@ -99,11 +90,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Assert.notNull(role, "userRole can not be null");
         Assert.notNull(role.getUserId(), "userId can not be null");
         Assert.notNull(role.getRole(), "role can not be null");
-        if (isCompanyRole(role) || isProjectRole(role)) {
+        if (isCompanyRole(role)) {
             Assert.notNull(role.getCompanyId(), "companyId can not be null");
-        }
-        if (isProjectRole(role)) {
-            Assert.notNull(role.getProjectId(), "projectId can not be null");
         }
         Role dbRole = lambdaQuery()
                 .eq(Role::getUserId, role.getUserId())
@@ -147,22 +135,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     /**
-     * 查询用户在公司下所有项目角色
-     * @param userId
-     * @return
-     */
-    @Override
-    public List<Role> listProjectRoleByUserId(Long companyId, Long userId) {
-        Assert.notNull(companyId, "companyId can not be null");
-        Assert.notNull(userId, "userId can not be null");
-        return lambdaQuery()
-                .eq(Role::getUserId, userId)
-                .eq(Role::getCompanyId, companyId)
-                .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
-                .list();
-    }
-
-    /**
      * 查询用户系统角色
      * @return
      */
@@ -187,22 +159,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 .list();
     }
 
-    /**
-     * 查询项目下所有角色
-     * @param projectId
-     * @return
-     */
-    @Override
-    public List<Role> listProjectRole(Long projectId) {
-        Assert.notNull(projectId, "projectId can not be null");
-        return lambdaQuery()
-                .eq(Role::getProjectId, projectId)
-                .in(Role::getRole, RoleEnum.PROJECT_ADMIN, RoleEnum.PROJECT_MEMBER)
-                .list();
-    }
-
     public void deleteCache(Role role) {
-        redisUtils.del(RedisKeyConstant.USER_ROLE_KEY, role.getCompanyId(), role.getProjectId(), role.getUserId());
+        redisUtils.del(RedisKeyConstant.USER_ROLE_KEY, role.getCompanyId(), role.getUserId());
     }
 
     public boolean isSystemRole(Role role) {
@@ -214,12 +172,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         RoleEnum roleEnum = RoleEnum.getByRole(role.getRole());
         return Objects.equals(roleEnum, RoleEnum.COMPANY_ADMIN)
                 || Objects.equals(roleEnum, RoleEnum.COMPANY_MEMBER);
-    }
-
-    public boolean isProjectRole(Role role) {
-        RoleEnum roleEnum = RoleEnum.getByRole(role.getRole());
-        return Objects.equals(roleEnum, RoleEnum.PROJECT_ADMIN)
-                || Objects.equals(roleEnum, RoleEnum.PROJECT_MEMBER);
     }
 
 }

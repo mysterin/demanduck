@@ -51,7 +51,7 @@ public class ProjectController {
      * 更新项目接口
      */
     @PostMapping("/update")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.PROJECT)
     public Response update(@RequestBody @Validated UpdateProjectRequest request) {
         Project project = new Project();
         BeanUtils.copyProperties(request, project);
@@ -64,7 +64,7 @@ public class ProjectController {
      * 查询公司的项目列表
      */
     @PostMapping("/list")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.COMPANY)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.COMPANY)
     public Response<List<Project>> list(@RequestBody @Validated BaseCompanyRequest request) {
         return Response.success(projectService.listProjectByCompanyId(request.getCompanyId()));
     }
@@ -73,7 +73,7 @@ public class ProjectController {
      * 删除项目接口
      */
     @PostMapping("/delete")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_ADMIN, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.PROJECT)
     public Response delete(@RequestBody @Validated BaseProjectRequest request) {
         projectService.removeById(request.getProjectId());
         return Response.success();
@@ -83,7 +83,7 @@ public class ProjectController {
      * 查询项目详情接口
      */
     @PostMapping("/get")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response<Project> get(@RequestBody @Validated BaseProjectRequest request) {
         return Response.success(projectService.getById(request.getProjectId()));
     }

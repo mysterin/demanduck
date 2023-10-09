@@ -12,10 +12,9 @@ public class RedisKeyConstant {
     /**
      * 用户角色缓存
      * {0} companyId
-     * {1} projectId
-     * {2} userId
+     * {1} userId
      */
-    public static final String USER_ROLE_KEY = "USER:ROLE:{0}:{1}:{2}";
+    public static final String USER_ROLE_KEY = "USER:ROLE:{0}:{1}";
     /**
      * 用户 token:id 缓存
      * {0} token

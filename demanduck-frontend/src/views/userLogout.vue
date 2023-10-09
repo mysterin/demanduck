@@ -13,6 +13,9 @@ const router = useRouter();
 logout().then(res => {
   if (res) {
     store.commit('setUser', '');
+    store.commit('setCompanyId', '');
+    store.commit('setProjectId', '');
+    store.commit('setProjectList', []);
     router.push({path: '/user/login'});
   } else {
     ElMessage({

@@ -43,7 +43,7 @@ public class MissionController {
      * 创建任务接口
      */
     @PostMapping("/create")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response create(@RequestBody @Validated CreateMissionRequest request) {
         Mission mission = new Mission();
         BeanUtils.copyProperties(request, mission);
@@ -58,7 +58,7 @@ public class MissionController {
      * 更新任务接口
      */
     @PostMapping("/update")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response update(@RequestBody @Validated UpdateMissionRequest request) {
         Mission mission = new Mission();
         BeanUtils.copyProperties(request, mission);
@@ -74,7 +74,7 @@ public class MissionController {
      * 分页查询需求下的任务列表
      */
     @PostMapping("/listDemandMission")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.DEMAND)
     public Response<Mission> listDemandMission(@RequestBody @Validated BaseDemandPageRequest request) {
         IPage<Mission> page = missionService.listMissionByDemandId(request.getDemandId(), request.getPageNo(), request.getPageSize());
         return Response.success(page);
@@ -86,7 +86,7 @@ public class MissionController {
      * @return
      */
     @PostMapping("/get")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.MISSION)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.MISSION)
     public Response<Mission> get(@RequestBody @Validated BaseMissionRequest request) {
         Mission mission = missionService.getById(request.getMissionId());
         return Response.success(mission);

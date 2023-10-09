@@ -37,7 +37,7 @@ public class CommentController {
      * 需求下评论
      */
     @PostMapping("/demandComment")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.DEMAND)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.DEMAND)
     public Response demandComment(@RequestBody @Validated DemandCommentRequest request) {
         Comment comment = new Comment();
         comment.setType(CommentType.DEMAND_COMMENT.name());
@@ -51,7 +51,7 @@ public class CommentController {
      * 任务下评论
      */
     @PostMapping("/missionComment")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.MISSION)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.MISSION)
     public Response missionComment(@RequestBody @Validated DemandCommentRequest request) {
         Comment comment = new Comment();
         comment.setType(CommentType.MISSION_COMMENT.name());
@@ -65,7 +65,7 @@ public class CommentController {
      * 缺陷下评论
      */
     @PostMapping("/flawComment")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.FLAW)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.FLAW)
     public Response flawComment(@RequestBody @Validated DemandCommentRequest request) {
         Comment comment = new Comment();
         comment.setType(CommentType.FLAW_COMMENT.name());
@@ -79,7 +79,7 @@ public class CommentController {
      * 分页查询评论列表
      */
     @PostMapping("/listComment")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response<CommentDTO> listComment(@RequestBody @Validated ListCommentPageRequest request) {
         Comment comment = new Comment();
         comment.setProjectId(request.getProjectId());
@@ -92,7 +92,7 @@ public class CommentController {
      * 分页查询回复的评论列表
      */
     @PostMapping("/listReplyComment")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response<CommentDTO> listReplyComment(@RequestBody @Validated ListReplyCommentPageRequest request) {
         Comment comment = new Comment();
         comment.setProjectId(request.getProjectId());

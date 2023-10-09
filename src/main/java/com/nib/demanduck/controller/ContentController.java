@@ -35,7 +35,7 @@ public class ContentController {
      * 查询需求内容
      */
     @PostMapping("/getDemandContent")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.PROJECT)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.PROJECT)
     public Response<Content> getDemandContent(@RequestBody @Validated BaseDemandRequest request) {
         return Response.success(contentService.getByBusinessId(request.getDemandId(), EntityType.DEMAND));
     }
@@ -44,7 +44,7 @@ public class ContentController {
      * 查询任务内容
      */
     @PostMapping("/getMissionContent")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.MISSION)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.MISSION)
     public Response<Content> getMissionContent(@RequestBody @Validated BaseMissionRequest request) {
         return Response.success(contentService.getByBusinessId(request.getMissionId(), EntityType.MISSION));
     }
@@ -53,7 +53,7 @@ public class ContentController {
      * 查询缺陷内容
      */
     @PostMapping("/getFlawContent")
-    @UserPermission(value = RoleEnum.SYS_COM_PRO_MEMBER, entityType = EntityType.FLAW)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN_MEMBER, entityType = EntityType.FLAW)
     public Response<Content> getFlawContent(@RequestBody @Validated BaseFlawRequest request) {
         return Response.success(contentService.getByBusinessId(request.getFlawId(), EntityType.FLAW));
     }

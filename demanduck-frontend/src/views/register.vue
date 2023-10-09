@@ -16,7 +16,7 @@
             <el-input v-model="user.code"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="user.password"></el-input>
+            <el-input type="password" v-model="user.password"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleRegister">注册</el-button>
