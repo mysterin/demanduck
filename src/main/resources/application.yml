@@ -27,7 +27,7 @@ spring:
     host: smtp.yeah.net
     port: 465
     username: demanduck@yeah.net
-    password: YNBUAAJKRVXZUOSG
+    password: 123456
     properties:
       mail:
         debug: true
