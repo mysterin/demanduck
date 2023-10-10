@@ -3,6 +3,7 @@ package com.nib.demanduck.util;
 import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;
 import com.nib.demanduck.constant.SceneConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.text.MessageFormat;
  * @date 2023/10/8 17:24
  */
 @Component
+@Slf4j
 public class ValidCodeUtils {
     @Autowired
     private MailUtils mailUtils;
@@ -30,9 +32,10 @@ public class ValidCodeUtils {
         String code = RandomStringUtils.randomNumeric(6);
         String subject = emailSubject(scene);
         String text = "您的验证码为：" + code + "，请勿泄露给他人，5 分钟内有效。";
-        mailUtils.sendMail(email, subject, text);
         String key = MessageFormat.format(RedisKeyConstant.VALID_CODE_KEY, email, scene);
         redisUtils.set(key, code, RedisConstant.FIVE_MINUTE);
+        log.debug("email: {}, scene: {}, 验证码: {}", email, scene, code);
+        mailUtils.sendMail(email, subject, text);
     }
 
     /**
@@ -52,13 +55,13 @@ public class ValidCodeUtils {
         String subject = "";
         switch (scene) {
             case SceneConstant.RESET_PASSWORD:
-                subject = "【Demanduck】重置密码";
+                subject = "重置密码";
                 break;
             case SceneConstant.REGISTER:
-                subject = "【Demanduck】注册";
+                subject = "注册";
                 break;
             default:
-                subject = "【Demanduck】";
+                subject = "";
                 break;
         }
         return subject;
