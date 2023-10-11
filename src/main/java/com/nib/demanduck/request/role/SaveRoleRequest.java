@@ -13,10 +13,9 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class SaveRoleRequest extends BaseRequest {
-    @NotNull(message = "用户id不能为空")
-    private Long userId;
+    @NotNull(message = "邮箱不能为空")
+    private String email;
     @NotBlank(message = "角色不能为空")
     private String role;
     private Long companyId;
-    private Long projectId;
 }
