@@ -1,5 +1,4 @@
 <template>
-
   <el-row>
     <el-col :span="4" :offset="4">
       <div class="add-button">
@@ -7,7 +6,7 @@
       </div>
     </el-col>
   </el-row>
-  <el-row>
+  <el-row class="member-list">
     <el-col :span="16" :offset="4">
       <el-table :data="memberList">
         <el-table-column prop="username" label="姓名"></el-table-column>
@@ -34,20 +33,26 @@
           <el-form-item label="姓名" prop="username" v-if="memberDialogStatus === 'UPDATE'">
             <el-input v-model="entity.username" disabled></el-input>
           </el-form-item>
-          <el-form-item label="邮箱" prop="email">
-            <el-input type="email" v-model="entity.email" :disabled="memberDialogStatus === 'UPDATE'"></el-input>
+          <el-form-item label="邮箱" prop="email" v-if="memberDialogStatus === 'UPDATE'">
+            <el-input type="email" v-model="entity.email" disabled>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="multiEmail" v-if="memberDialogStatus === 'ADD'">
+            <el-input type="textarea" :rows="4" v-model="entity.multiEmail">
+            </el-input>
+            <el-text size="small" type="warning">多个用英文逗号隔开</el-text>
           </el-form-item>
           <el-form-item label="角色" prop="role">
             <el-select v-model="entity.role" placeholder="请选择角色">
               <el-option label="管理员" value="COMPANY_ADMIN"></el-option>
-              <el-option label="成员" value="COMPANY_MEMBER"></el-option>
+              <el-option label="普通成员" value="COMPANY_MEMBER"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
         <span class="dialog-footer">
-      <el-button @click="memberDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="handleSaveMember">确 定</el-button>
-    </span>
+          <el-button @click="memberDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleSaveMember">确 定</el-button>
+        </span>
       </el-col>
     </el-row>
   </el-dialog>
@@ -57,6 +62,7 @@
 import {ref} from 'vue';
 import {useRoute} from "vue-router";
 import {listCompanyRole, deleteCompanyRole, saveCompanyRole} from "@/api/role";
+import {ElMessage} from "element-plus";
 
 const route = useRoute();
 const companyId = ref(route.params.companyId);
@@ -79,6 +85,9 @@ const rules = ref({
     {required: true, message: '请输入姓名', trigger: 'blur'}
   ],
   email: [
+    {required: true, message: '请输入邮箱', trigger: 'blur'}
+  ],
+  multiEmail: [
     {required: true, message: '请输入邮箱', trigger: 'blur'}
   ],
   role: [
@@ -110,10 +119,11 @@ const handleSaveMember = () => {
     if (valid) {
       saveCompanyRole({
         companyId: companyId.value,
-        email: entity.value.email,
+        emailList: entity.value.multiEmail ? entity.value.multiEmail.split(',') : [entity.value.email],
         role: entity.value.role
       }).then(res => {
         if (res) {
+          ElMessage.success('操作成功');
           memberDialogVisible.value = false;
           init();
         }
@@ -126,6 +136,7 @@ const handleSaveMember = () => {
 const handleDeleteMember = (row) => {
   deleteCompanyRole({roleId: row.roleId}).then(res => {
     if (res) {
+      ElMessage.success('移除成功');
       init();
     }
   });
@@ -136,5 +147,9 @@ const handleDeleteMember = (row) => {
 <style scoped>
 .add-button {
   display: flex;
+}
+
+.member-list {
+  margin-top: 30px;
 }
 </style>

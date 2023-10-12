@@ -34,6 +34,10 @@ public enum EntityType {
      * 评论
      */
     COMMENT,
+    /**
+     * 角色
+     */
+    ROLE,
     ;
 
 }

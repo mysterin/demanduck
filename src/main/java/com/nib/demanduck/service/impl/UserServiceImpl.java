@@ -118,6 +118,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         baseMapper.updateById(user);
     }
 
+    @Override
+    public User getByEmail(String email) {
+        User user = getByMobileOrEmail(null, email);
+        return user;
+    }
+
     /**
      * 根据手机号或邮箱获取用户
      *

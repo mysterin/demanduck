@@ -6,12 +6,17 @@ import com.nib.demanduck.constant.RedisConstant;
 import com.nib.demanduck.constant.RedisKeyConstant;
 import com.nib.demanduck.constant.RoleEnum;
 import com.nib.demanduck.entity.Role;
+import com.nib.demanduck.entity.User;
+import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.mapper.RoleMapper;
 import com.nib.demanduck.service.RoleService;
+import com.nib.demanduck.service.UserService;
 import com.nib.demanduck.util.ApplicationUtils;
+import com.nib.demanduck.util.AssertUtils;
 import com.nib.demanduck.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -35,6 +40,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private ApplicationUtils applicationUtils;
     @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private UserService userService;
 
     /**
      * 查询用户角色, 包括系统角色和公司角色和项目角色
@@ -109,6 +116,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         // 清除缓存
         deleteCache(role);
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveRole(Long companyId, List<String> emailList, String role) {
+        for (String email : emailList) {
+            User user = userService.getByEmail(email);
+            AssertUtils.notNull(user, ErrorCode.INVALID_USER.msg("无效邮箱: " + email));
+            Role userRole = new Role();
+            userRole.setUserId(user.getId());
+            userRole.setCompanyId(companyId);
+            userRole.setRole(role);
+            saveRole(userRole);
+        }
     }
 
     @Override

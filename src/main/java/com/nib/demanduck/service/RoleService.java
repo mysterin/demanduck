@@ -21,6 +21,7 @@ public interface RoleService extends IService<Role> {
     Boolean hasPermission(Long companyId, Long userId, RoleEnum[] roleArray);
 
     void saveRole(Role role);
+    void saveRole(Long companyId, List<String> emailList, String role);
     void deleteRole(Long userRoleId);
 
     List<Role> listCompanyRoleByUserId(Long userId);

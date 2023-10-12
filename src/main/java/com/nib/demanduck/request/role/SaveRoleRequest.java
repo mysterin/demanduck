@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author linxiaobin
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class SaveRoleRequest extends BaseRequest {
     @NotNull(message = "邮箱不能为空")
-    private String email;
+    private List<String> emailList;
     @NotBlank(message = "角色不能为空")
     private String role;
     private Long companyId;

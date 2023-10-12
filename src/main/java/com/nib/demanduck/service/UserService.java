@@ -23,4 +23,6 @@ public interface UserService extends IService<User> {
     void logout(String token);
 
     void resetPassword(String email, String password);
+
+    User getByEmail(String email);
 }

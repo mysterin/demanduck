@@ -29,4 +29,9 @@ public enum ErrorCode {
         this.code = code;
         this.msg = msg;
     }
+
+    public ErrorCode msg(String msg) {
+        this.msg = msg;
+        return this;
+    }
 }

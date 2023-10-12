@@ -2,6 +2,8 @@ package com.nib.demanduck.controller;
 
 import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.entity.User;
+import com.nib.demanduck.exception.ErrorCode;
+import com.nib.demanduck.exception.ServiceException;
 import com.nib.demanduck.request.company.BaseCompanyRequest;
 import com.nib.demanduck.request.project.BaseProjectRequest;
 import com.nib.demanduck.request.role.RoleRequest;
@@ -13,8 +15,10 @@ import com.nib.demanduck.entity.Role;
 import com.nib.demanduck.response.role.RoleDTO;
 import com.nib.demanduck.service.RoleService;
 import com.nib.demanduck.service.UserService;
+import com.nib.demanduck.util.AssertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,10 +54,7 @@ public class RoleController {
     @PostMapping("/saveSystemRole")
     @UserPermission(value = RoleEnum.SYSTEM_ADMIN, entityType = EntityType.NO_ENTITY)
     public Response saveSystemRole(@RequestBody @Validated SaveRoleRequest request) {
-        Role role = new Role();
-        BeanUtils.copyProperties(request, role);
-        role.setCompanyId(null);
-        roleService.saveRole(role);
+        roleService.saveRole(request.getCompanyId(), request.getEmailList(), request.getRole());
         return Response.success();
     }
 
@@ -86,9 +87,7 @@ public class RoleController {
     @PostMapping("/saveCompanyRole")
     @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
     public Response saveCompanyRole(@RequestBody @Validated SaveRoleRequest request) {
-        Role role = new Role();
-        BeanUtils.copyProperties(request, role);
-        roleService.saveRole(role);
+        roleService.saveRole(request.getCompanyId(), request.getEmailList(), request.getRole());
         return Response.success();
     }
 
@@ -96,7 +95,7 @@ public class RoleController {
      * 删除用户公司角色接口
      */
     @PostMapping("/deleteCompanyRole")
-    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.COMPANY)
+    @UserPermission(value = RoleEnum.SYS_COM_ADMIN, entityType = EntityType.ROLE)
     public Response deleteCompanyRole(@RequestBody @Validated RoleRequest request) {
         roleService.deleteRole(request.getRoleId());
         return Response.success();

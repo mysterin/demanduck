@@ -3,10 +3,7 @@ package com.nib.demanduck.aop;
 import com.nib.demanduck.annotation.UserPermission;
 import com.nib.demanduck.constant.EntityType;
 import com.nib.demanduck.constant.RoleEnum;
-import com.nib.demanduck.entity.Demand;
-import com.nib.demanduck.entity.Flaw;
-import com.nib.demanduck.entity.Mission;
-import com.nib.demanduck.entity.Project;
+import com.nib.demanduck.entity.*;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.exception.ServiceException;
 import com.nib.demanduck.service.*;
@@ -92,6 +89,13 @@ public class ControllerAspect {
                 if (Objects.nonNull(flawId)) {
                     Flaw flaw = flawService.getById(flawId);
                     companyId = flaw.getCompanyId();
+                }
+                break;
+            case ROLE:
+                Long roleId = ReflectUtils.getLongFieldValue(args0, "roleId");
+                if (Objects.nonNull(roleId)) {
+                    Role role = roleService.getById(roleId);
+                    companyId = role.getCompanyId();
                 }
                 break;
             default:
