@@ -43,6 +43,11 @@ const routes = [
                         name: 'demand',
                         component: () => import('../views/demand'),
                     }, {
+                        path: 'demand-edit',
+                        name: 'demandEdit',
+                        alias: 'demand-edit/:demandId',
+                        component: () => import('../views/demandEdit'),
+                    }, {
                         path: 'mission',
                         name: 'mission',
                         component: () => import('../views/mission'),

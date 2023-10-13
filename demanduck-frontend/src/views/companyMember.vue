@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="4" :offset="4">
       <div class="add-button">
-        <el-button type="primary" @click="handleAddMemberDialog()">添加成员</el-button>
+        <el-button type="primary" @click="handleAddMemberDialog()" plain>添加成员</el-button>
       </div>
     </el-col>
   </el-row>
@@ -18,8 +18,8 @@
         </el-table-column>
         <el-table-column label="操作" width="240">
           <template #default="scope">
-            <el-button type="primary" size="small" @click="handleModifyMemberDialog(scope.row)">修改角色</el-button>
-            <el-button type="danger" size="small" @click="handleDeleteMember(scope.row)">移除成员</el-button>
+            <el-button type="primary" size="small" @click="handleModifyMemberDialog(scope.row)" plain>修改角色</el-button>
+            <el-button type="danger" size="small" @click="handleDeleteMember(scope.row)" plain>移除成员</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,8 +50,8 @@
           </el-form-item>
         </el-form>
         <span class="dialog-footer">
-          <el-button @click="memberDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleSaveMember">确 定</el-button>
+          <el-button @click="memberDialogVisible = false" plain>取 消</el-button>
+          <el-button type="primary" @click="handleSaveMember" plain>确 定</el-button>
         </span>
       </el-col>
     </el-row>

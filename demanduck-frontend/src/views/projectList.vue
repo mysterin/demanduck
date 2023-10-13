@@ -31,8 +31,8 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="createProjectDialog = false">取 消</el-button>
-        <el-button type="primary" @click="handleCreateProject">确 定</el-button>
+        <el-button @click="createProjectDialog = false" plain>取 消</el-button>
+        <el-button type="primary" @click="handleCreateProject" palin>确 定</el-button>
       </span>
     </template>
   </el-dialog>

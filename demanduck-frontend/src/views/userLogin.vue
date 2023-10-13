@@ -13,7 +13,7 @@
                       autocomplete="off"></el-input>
             <el-link :underline="false" type="info" href="/resetPassword">忘记密码</el-link>
           </el-form-item>
-          <el-button type="primary" @click="submit" class="login-button">登录</el-button>
+          <el-button type="primary" @click="submit" class="login-button" plain>登录</el-button>
         </el-form>
       </div>
     </el-col>

@@ -10,7 +10,7 @@
             <el-input v-model="user.email"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleSendValidCode">获取验证码</el-button>
+            <el-button type="primary" @click="handleSendValidCode" plain>获取验证码</el-button>
           </el-form-item>
           <el-form-item label="验证码">
             <el-input v-model="user.code"></el-input>
@@ -19,7 +19,7 @@
             <el-input type="password" v-model="user.password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="handleRegister">注册</el-button>
+            <el-button type="primary" @click="handleRegister" plain>注册</el-button>
           </el-form-item>
         </el-form>
       </div>
