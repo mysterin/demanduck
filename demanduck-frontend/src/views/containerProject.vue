@@ -9,15 +9,9 @@
   </el-container>
 </template>
 
-<script>
+<script setup>
 import projectTop from "@/components/projectTop.vue";
 
-export default {
-  name: "projectContainer",
-  components: {
-    'projectTop': projectTop
-  }
-}
 </script>
 
 <style scoped>

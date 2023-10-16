@@ -45,7 +45,7 @@ const routes = [
                     }, {
                         path: 'demand-edit',
                         name: 'demandEdit',
-                        alias: 'demand-edit/:demandId',
+                        // alias: 'demand-edit/:demandId',
                         component: () => import('../views/demandEdit'),
                     }, {
                         path: 'mission',
