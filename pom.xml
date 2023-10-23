@@ -25,6 +25,7 @@
         <fastjson2.version>2.0.38</fastjson2.version>
         <commons.codec.version>1.15</commons.codec.version>
         <hibernate.validator.annotation.version>5.4.3.Final</hibernate.validator.annotation.version>
+        <com.aliyun.oss.aliyun-sdk-oss.version>3.15.1</com.aliyun.oss.aliyun-sdk-oss.version>
     </properties>
     <dependencies>
         <dependency>
@@ -96,6 +97,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${com.aliyun.oss.aliyun-sdk-oss.version}</version>
         </dependency>
     </dependencies>
 

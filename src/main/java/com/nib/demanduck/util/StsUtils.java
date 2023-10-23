@@ -1,5 +1,6 @@
 package com.nib.demanduck.util;
 
+import com.nib.demanduck.response.config.StsTokenDTO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +15,7 @@ public class StsUtils {
      * 获取 sts token
      * @return
      */
-    public String getStsToken() {
+    public StsTokenDTO getStsToken() {
         return null;
     }
 }
