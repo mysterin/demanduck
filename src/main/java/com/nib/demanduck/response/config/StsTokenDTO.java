@@ -15,6 +15,6 @@ public class StsTokenDTO {
     private String accessKeyId;
     private String accessKeySecret;
     private String stsToken;
-    private String stsTokenExpireTime;
+    private String expiration;
     private String bucket;
 }
