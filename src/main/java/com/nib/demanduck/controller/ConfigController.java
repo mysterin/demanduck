@@ -6,6 +6,7 @@ import com.nib.demanduck.util.StsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023/10/23 17:55
  */
 @RestController
+@RequestMapping("/config")
 @Slf4j
 public class ConfigController {
 
@@ -25,6 +27,7 @@ public class ConfigController {
      */
     @PostMapping("/getStsToken")
     public Response<StsTokenDTO> getStsToken() {
-        return null;
+        StsTokenDTO stsTokenDTO = stsUtils.getStsToken();
+        return Response.success(stsTokenDTO);
     }
 }
