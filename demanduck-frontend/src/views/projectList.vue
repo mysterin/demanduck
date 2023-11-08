@@ -23,10 +23,13 @@
   <el-dialog v-model="createProjectDialog" title="创建项目" width="30%">
     <el-form ref="createProjectForm" :model="createProjectFormData" :rules="rules">
       <el-form-item label="项目logo" prop="logo">
-        <el-input v-model="createProjectFormData.logo"></el-input>
+        <nib-upload :url="createProjectFormData.logo"></nib-upload>
       </el-form-item>
       <el-form-item label="项目名称" prop="name">
         <el-input v-model="createProjectFormData.name"></el-input>
+      </el-form-item>
+      <el-form-item label="项目名称" prop="img">
+        <el-upload action="#" list-type="picture-card" :auto-upload="false"></el-upload>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -44,6 +47,7 @@ import store from '@/store';
 import {getProjectList, createProject} from "@/api/project";
 import {ElMessage} from "element-plus";
 import { useRouter } from "vue-router";
+import {nibUpload} from "@/components/nibUpload";
 
 const router = useRouter();
 const companyId = ref(store.state.companyId);

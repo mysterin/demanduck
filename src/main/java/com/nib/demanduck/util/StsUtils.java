@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StsUtils {
 
-    @Value("${demanduck.aliyun.oss.endpoint")
-    private String endpoint;
     @Value("${demanduck.aliyun.accessKeyId")
     private String accessKeyId;
     @Value("${demanduck.aliyun.accessKeySecret")
     private String accessKeySecret;
+    @Value("${demanduck.aliyun.oss.endpoint")
+    private String endpoint;
     @Value("${demanduck.aliyun.oss.regionId")
     private String regionId;
     @Value("${demanduck.aliyun.oss.bucketName")

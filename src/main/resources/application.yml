@@ -1,5 +1,15 @@
 demanduck:
   domain: http://localhost:8043
+  aliyun:
+    accessKeyId: LTAI4Fy5Qq4X3Z4Q4Q4Q4Q4Q
+    accessKeySecret: OIWERJOSJFOSIJFOW34242OISJF
+    oss:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      regionId: oss-cn-beijing
+      bucketName: demanduck
+      roleArn: acs:ram::1234567890123456:role/aliyunosstokengeneratorrole
+      roleSessionName: demanduck-oss-session
+      duration: 1800
 server:
   port: 8045
   servlet:
