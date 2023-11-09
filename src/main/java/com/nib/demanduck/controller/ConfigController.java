@@ -23,11 +23,11 @@ public class ConfigController {
     private StsUtils stsUtils;
 
     /**
-     * 获取阿里云 sts token
+     * 获取阿里云 oss sts token
      */
-    @PostMapping("/getStsToken")
-    public Response<StsTokenDTO> getStsToken() {
-        StsTokenDTO stsTokenDTO = stsUtils.getStsToken();
+    @PostMapping("/getOssStsToken")
+    public Response<StsTokenDTO> getOssStsToken() {
+        StsTokenDTO stsTokenDTO = stsUtils.getOssStsToken();
         return Response.success(stsTokenDTO);
     }
 }

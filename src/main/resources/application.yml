@@ -3,9 +3,12 @@ demanduck:
   aliyun:
     accessKeyId: LTAI4Fy5Qq4X3Z4Q4Q4Q4Q4Q
     accessKeySecret: OIWERJOSJFOSIJFOW34242OISJF
+    sts:
+      endpoint: sts.cn-beijing.aliyuncs.com
     oss:
+      region: oss-cn-beijing
+      regionId: cn-beijing
       endpoint: oss-cn-beijing.aliyuncs.com
-      regionId: oss-cn-beijing
       bucketName: demanduck
       roleArn: acs:ram::1234567890123456:role/aliyunosstokengeneratorrole
       roleSessionName: demanduck-oss-session

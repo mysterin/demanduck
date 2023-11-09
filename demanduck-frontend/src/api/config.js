@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getStsToken(data) {
+export function getOssStsToken(data) {
     return request({
-        url: '/config/getStsToken',
+        url: '/config/getOssStsToken',
         method: 'post',
         data
     });
