@@ -1,5 +1,8 @@
 demanduck:
   domain: http://localhost:8043
+  file:
+    dir: E:\\data\\file
+    domain: http://localhost:8044
   aliyun:
     accessKeyId: LTAI4Fy5Qq4X3Z4Q4Q4Q4Q4Q
     accessKeySecret: OIWERJOSJFOSIJFOW34242OISJF
