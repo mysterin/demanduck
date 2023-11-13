@@ -23,7 +23,7 @@
   <el-dialog v-model="createProjectDialog" title="创建项目" width="30%">
     <el-form ref="createProjectForm" :model="createProjectFormData" :rules="rules">
       <el-form-item label="项目logo" prop="logo">
-        <nibUpload :url="createProjectFormData.logo" oss-prefix="project/logo/"></nibUpload>
+        <nibUpload :url="createProjectFormData.logo" prefix="project/logo/"></nibUpload>
       </el-form-item>
       <el-form-item label="项目名称" prop="name">
         <el-input v-model="createProjectFormData.name"></el-input>

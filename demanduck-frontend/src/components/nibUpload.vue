@@ -3,7 +3,7 @@
       ref="upload"
       action="#"
       :before-upload="handleBefore"
-      :http-request="ossUpload"
+      :http-request="handleHttpRequest"
       :on-success="handleFileSuccess"
       :on-exceed="handleFileExceed"
       :on-remove="handleFileRemove"
@@ -50,9 +50,14 @@ import {getOssStsToken} from "@/api/config";
 import OSS from "ali-oss";
 import {uuid} from "@/utils/random";
 import {getFileSuffix} from "@/utils/file";
+import {uploadFile} from "@/api/file";
 
 const upload = ref(null);
 const props = defineProps({
+  mode: {
+    type: String,
+    default: 'demanduck'
+  },
   url: {
     type: String,
     default: ''
@@ -87,7 +92,7 @@ const props = defineProps({
       return [];
     }
   },
-  ossPrefix: {
+  prefix: {
     type: String,
     default: 'tmp/'
   }
@@ -99,26 +104,40 @@ const dialogVisible = ref(false);
 let client;
 
 (() => {
-  getOssStsToken().then(res => {
-    if (res && res.data) {
-      client = new OSS({
-        region: res.data.region,
-        accessKeyId: res.data.accessKeyId,
-        accessKeySecret: res.data.accessKeySecret,
-        stsToken: res.data.stsToken,
-        bucket: res.data.bucket,
-        refreshSTSTokenInterval: 300000,
-        refreshSTSToken: async () => {
-          const res = await getOssStsToken();
-          return {
-            accessKeyId: res.data.accessKeyId,
-            accessKeySecret: res.data.accessKeySecret,
-            stsToken: res.data.securityToken,
-          };
-        }
-      });
-    }
-  });
+  if (props.mode === 'oss') {
+    // 阿里云上传
+    getOssStsToken().then(res => {
+      if (res && res.data) {
+        client = new OSS({
+          region: res.data.region,
+          accessKeyId: res.data.accessKeyId,
+          accessKeySecret: res.data.accessKeySecret,
+          stsToken: res.data.stsToken,
+          bucket: res.data.bucket,
+          refreshSTSTokenInterval: 300000,
+          refreshSTSToken: async () => {
+            const res = await getOssStsToken();
+            return {
+              accessKeyId: res.data.accessKeyId,
+              accessKeySecret: res.data.accessKeySecret,
+              stsToken: res.data.securityToken,
+            };
+          }
+        });
+      }
+    });
+  } else {
+    // 默认上传
+    client = {
+      put: (objectName, file) => {
+        const formData = new FormData();
+        formData.append('objectName', objectName);
+        formData.append('file', file);
+        return uploadFile(formData);
+      }
+    };
+  }
+
 })();
 
 const handleBefore = (file) => {
@@ -126,10 +145,10 @@ const handleBefore = (file) => {
   return true;
 }
 
-const ossUpload = function (options) {
+const handleHttpRequest = function (options) {
   const file = options.file;
   const type = getFileSuffix(file.name);
-  const objectName = props.ossPrefix + uuid() + type;
+  const objectName = props.prefix + uuid() + type;
   client
       .put(objectName, file)
       .then(res => {

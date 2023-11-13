@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Administrator
@@ -21,29 +20,29 @@ import java.io.IOException;
 @Slf4j
 public class FileController {
 
-    @Value("${demanduck.file.dir")
+    @Value("${demanduck.file.dir}")
     private String fileDir;
-    @Value("${demanduck.file.domain")
+    @Value("${demanduck.file.domain}")
     private String fileDomain;
 
     /**
      * 上传文件
-     * @param name
+     * @param objectName
      * @param multipartFile
      * @return
      */
     @PostMapping("/upload")
-    public Response<UploadFileDTO> upload(@RequestParam("name") String name, @RequestParam("file") MultipartFile multipartFile) {
+    public Response<UploadFileDTO> upload(@RequestParam("objectName") String objectName, @RequestParam("file") MultipartFile multipartFile) {
         try {
-            String filePath = fileDir + name;
+            String filePath = fileDir + objectName;
             File file = new File(filePath);
             FileUtils.createDir(file);
             multipartFile.transferTo(file);
-            String url = fileDomain + name;
+            String url = fileDomain + objectName;
             UploadFileDTO uploadFileDTO = new UploadFileDTO().setUrl(url);
             return Response.success(uploadFileDTO);
         } catch (Exception e) {
-            log.error("上传文件失败，name={}", name);
+            log.error("上传文件失败，name={}", objectName, e);
             return Response.error();
         }
     }
