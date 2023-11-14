@@ -2,11 +2,9 @@
   <el-upload
       ref="upload"
       action="#"
-      :before-upload="handleBefore"
+      :before-upload="handleBeforeUpload"
       :http-request="handleHttpRequest"
-      :on-success="handleFileSuccess"
       :on-exceed="handleFileExceed"
-      :on-remove="handleFileRemove"
       :file-list="fileList"
       :accept="accept"
       :name="fileName"
@@ -18,6 +16,11 @@
     <el-icon>
       <Plus/>
     </el-icon>
+    <template #tip>
+      <div class="el-upload__tip">
+        {{ tips }}
+      </div>
+    </template>
     <template #file="{ file }">
       <div>
         <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
@@ -51,6 +54,7 @@ import OSS from "ali-oss";
 import {uuid} from "@/utils/random";
 import {getFileSuffix} from "@/utils/file";
 import {uploadFile} from "@/api/file";
+import { ElMessage } from "element-plus";
 
 const upload = ref(null);
 const props = defineProps({
@@ -86,24 +90,36 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  fileList: {
-    type: Array,
-    default: () => {
-      return [];
-    }
-  },
   prefix: {
     type: String,
     default: 'tmp/'
+  },
+  fileTypes: {
+    type: Array,
+    default: () => {
+      return ['jpg', 'png', 'jpeg'];
+    }
+  },
+  maxSize: {
+    type: Number,
+    default: 500
   }
 });
 
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
+const fileList = ref([]);
 
 let client;
 
 (() => {
+  if (props.url) {
+    props.url.split(',').forEach(url => {
+      fileList.value.push({
+        url: url
+      })
+    });
+  }
   if (props.mode === 'oss') {
     // 阿里云上传
     getOssStsToken().then(res => {
@@ -140,8 +156,16 @@ let client;
 
 })();
 
-const handleBefore = (file) => {
-  console.log(file);
+const handleBeforeUpload = function (file) {
+  const type = getFileSuffix(file.name);
+  if (!type || !props.fileTypes.includes(type.substring(1))) {
+    ElMessage.error(`文件格式不支持，仅支持 ${props.fileTypes.join(',')} 格式`);
+    return false;
+  }
+  if (file.size > props.maxSize * 1024) {
+    ElMessage.error(`文件大小超过 ${props.maxSize}KB`);
+    return false;
+  }
   return true;
 }
 
@@ -152,27 +176,16 @@ const handleHttpRequest = function (options) {
   client
       .put(objectName, file)
       .then(res => {
-        console.log(res);
+        console.log('上传成功', res);
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
+        ElMessage.error('上传失败');
       });
 }
 
-const handleFileSuccess = (res, file, fileList) => {
-  console.log(res);
-  console.log(file);
-  console.log(fileList);
-}
-
-const handleFileExceed = (files, fileList) => {
-  console.log(files);
-  console.log(fileList);
-}
-
-const handleFileRemove = (file, fileList) => {
-  console.log(file);
-  console.log(fileList);
+const handleFileExceed = () => {
+  ElMessage.warning(`当前限制选择 ${props.limit} 个文件`);
 }
 
 const handlePictureCardPreview = file => {
@@ -181,7 +194,6 @@ const handlePictureCardPreview = file => {
 }
 
 const handleRemove = file => {
-  console.log(file);
   upload.value.handleRemove(file);
 }
 
