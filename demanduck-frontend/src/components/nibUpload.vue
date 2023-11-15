@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import {ref, defineProps} from "vue";
+import {ref, defineProps, defineEmits, computed} from "vue";
 import {getOssStsToken} from "@/api/config";
 import OSS from "ali-oss";
 import {uuid} from "@/utils/random";
@@ -57,6 +57,7 @@ import {uploadFile} from "@/api/file";
 import { ElMessage } from "element-plus";
 
 const upload = ref(null);
+const emit = defineEmits(['update:url']);
 const props = defineProps({
   mode: {
     type: String,
@@ -108,18 +109,25 @@ const props = defineProps({
 
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
-const fileList = ref([]);
 
 let client;
 
-(() => {
-  if (props.url) {
-    props.url.split(',').forEach(url => {
-      fileList.value.push({
-        url: url
-      })
-    });
+// fileList 计算
+const fileList = computed({
+  get() {
+    let list = [];
+    if (props.url) {
+      props.url.split(',').forEach(url => {
+        list.push({
+          url: url
+        })
+      });
+    }
+    return list;
   }
+});
+
+(() => {
   if (props.mode === 'oss') {
     // 阿里云上传
     getOssStsToken().then(res => {
@@ -175,8 +183,14 @@ const handleHttpRequest = function (options) {
   const objectName = props.prefix + uuid() + type;
   client
       .put(objectName, file)
-      .then(res => {
-        console.log('上传成功', res);
+      .then((res) => {
+        if (res && res.data && res.data.url) {
+          fileList.value.push({
+            url: res.data.url
+          });
+          let url = fileList.value.map(item => item.url).join(',');
+          emit('update:url', url);
+        }
       })
       .catch(err => {
         console.error(err);
@@ -195,6 +209,8 @@ const handlePictureCardPreview = file => {
 
 const handleRemove = file => {
   upload.value.handleRemove(file);
+  let url = fileList.value.map(item => item.url).join(',');
+  emit('update:url', url);
 }
 
 </script>

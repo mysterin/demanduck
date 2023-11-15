@@ -2,7 +2,7 @@ package com.nib.demanduck.request.project;
 
 import com.nib.demanduck.request.BaseRequest;
 import lombok.Data;
-import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class CreateProjectRequest extends BaseRequest {
      * 项目名称
      */
     @NotBlank(message = "项目名称不能为空")
-    @Range(min = 3, max = 25, message = "项目名称长度为3-25个字符")
+    @Length(min = 3, max = 25, message = "项目名称长度为3-25个字符")
     private String name;
     /**
      * 项目logo

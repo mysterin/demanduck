@@ -1,8 +1,8 @@
 <template>
   <el-row class="project-list">
-    <el-col :span="4" v-for="project in projectList" :key="project.id">
-      <el-card class="project-box"
-               shadow="hover" @click="handleProjectClick(project)">
+    <el-col :span="4" v-for="project in projectList" :key="project.id" class="project-box">
+      <el-card class="project-add-card"
+               shadow="hover" @click="handleProjectClick(project)" :title="project.name">
         <img :src="project.logo"/>
         <div>
           <span>{{ project.name }}</span>
@@ -10,7 +10,7 @@
       </el-card>
     </el-col>
     <el-col :span="4">
-      <el-card class="project-box" shadow="hover" @click="handleCreateDialog">
+      <el-card class="project-add-card" shadow="hover" @click="handleCreateDialog">
         <div class="create-button">
           <el-icon size="32">
             <Plus/>
@@ -23,7 +23,7 @@
   <el-dialog v-model="createProjectDialog" title="创建项目" width="30%">
     <el-form ref="createProjectForm" :model="createProjectFormData" :rules="rules">
       <el-form-item label="项目logo" prop="logo">
-        <nibUpload :url="createProjectFormData.logo" prefix="project/logo/"></nibUpload>
+        <nibUpload v-model:url="createProjectFormData.logo" prefix="project/logo/"></nibUpload>
       </el-form-item>
       <el-form-item label="项目名称" prop="name">
         <el-input v-model="createProjectFormData.name"></el-input>
@@ -108,16 +108,24 @@ const handleCreateProject = () => {
 </script>
 
 <style scoped>
-
 .project-box {
+  margin: 5px;
+  height: 120px;
+  width: 120px;
+}
+
+.project-box img {
+  max-height: 60px;
+  width: 100%;
+}
+
+.project-add-card {
+  margin: 5px;
   height: 120px;
   width: 120px;
   cursor: pointer;
 }
 
-.project-box img {
-  width: 100%;
-}
 
 .create-button {
   padding-top: 22px;
