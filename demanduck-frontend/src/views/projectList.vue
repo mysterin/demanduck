@@ -9,7 +9,7 @@
         </div>
       </el-card>
     </el-col>
-    <el-col :span="4">
+    <el-col :span="4" class="project-box">
       <el-card class="project-add-card" shadow="hover" @click="handleCreateDialog">
         <div class="create-button">
           <el-icon size="32">
@@ -115,8 +115,10 @@ const handleCreateProject = () => {
 }
 
 .project-box img {
+  height: auto;
   max-height: 60px;
-  width: 100%;
+  width: auto;
+  max-width: 60px;
 }
 
 .project-add-card {
