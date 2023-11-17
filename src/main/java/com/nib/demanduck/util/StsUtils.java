@@ -1,10 +1,7 @@
 package com.nib.demanduck.util;
 
-import com.aliyun.oss.ClientException;
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
 import com.aliyuncs.auth.sts.AssumeRoleResponse;
@@ -12,9 +9,10 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.nib.demanduck.exception.ErrorCode;
 import com.nib.demanduck.exception.ServiceException;
+import com.nib.demanduck.properties.AliyunProperties;
 import com.nib.demanduck.response.config.StsTokenDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -29,26 +27,8 @@ import java.util.Date;
 @Slf4j
 public class StsUtils {
 
-    @Value("${demanduck.aliyun.accessKeyId}")
-    private String accessKeyId;
-    @Value("${demanduck.aliyun.accessKeySecret}")
-    private String accessKeySecret;
-    @Value("${demanduck.aliyun.sts.endpoint}")
-    private String stsEndpoint;
-    @Value("${demanduck.aliyun.oss.region}")
-    private String region;
-    @Value("${demanduck.aliyun.oss.regionId}")
-    private String regionId;
-    @Value("${demanduck.aliyun.oss.endpoint}")
-    private String ossEndpoint;
-    @Value("${demanduck.aliyun.oss.bucketName}")
-    private String bucketName;
-    @Value("${demanduck.aliyun.oss.roleArn}")
-    private String roleArn;
-    @Value("${demanduck.aliyun.oss.roleSessionName}")
-    private String roleSessionName;
-    @Value("${demanduck.aliyun.oss.duration}")
-    private Long duration;
+    @Autowired
+    private AliyunProperties aliyunProperties;
 
 
     /**
@@ -58,6 +38,7 @@ public class StsUtils {
      */
     public StsTokenDTO getOssStsToken() {
         try {
+            AliyunProperties.Oss oss = aliyunProperties.getOss();
             String policy = "{\n" +
                     "    \"Version\": \"1\", \n" +
                     "    \"Statement\": [\n" +
@@ -67,29 +48,29 @@ public class StsUtils {
                     "                \"oss:GetObject\"\n" +
                     "            ], \n" +
                     "            \"Resource\": [\n" +
-                    "                \"acs:oss:*:*:" + bucketName + "/*\" \n" +
+                    "                \"acs:oss:*:*:" + oss.getBucketName() + "/*\" \n" +
                     "            ], \n" +
                     "            \"Effect\": \"Allow\"\n" +
                     "        }\n" +
                     "    ]\n" +
                     "}";
-            DefaultProfile.addEndpoint("", "Sts", stsEndpoint);
-            DefaultProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessKeySecret);
+            DefaultProfile.addEndpoint("", "Sts", aliyunProperties.getSts().getEndpoint());
+            DefaultProfile profile = DefaultProfile.getProfile(oss.getRegionId(), aliyunProperties.getAccessKeyId(), aliyunProperties.getAccessKeySecret());
             DefaultAcsClient client = new DefaultAcsClient(profile);
             AssumeRoleRequest request = new AssumeRoleRequest();
             request.setSysMethod(MethodType.POST);
-            request.setRoleArn(roleArn);
-            request.setRoleSessionName(roleSessionName);
+            request.setRoleArn(oss.getRoleArn());
+            request.setRoleSessionName(oss.getRoleSessionName());
             request.setPolicy(policy);
-            request.setDurationSeconds(duration);
+            request.setDurationSeconds(oss.getDuration());
             AssumeRoleResponse acsResponse = client.getAcsResponse(request);
             StsTokenDTO stsTokenDTO = new StsTokenDTO()
-                    .setRegion(region)
+                    .setRegion(oss.getRegion())
                     .setAccessKeyId(acsResponse.getCredentials().getAccessKeyId())
                     .setAccessKeySecret(acsResponse.getCredentials().getAccessKeySecret())
                     .setStsToken(acsResponse.getCredentials().getSecurityToken())
                     .setExpiration(acsResponse.getCredentials().getExpiration())
-                    .setBucket(bucketName);
+                    .setBucket(oss.getBucketName());
             return stsTokenDTO;
         } catch (Exception e) {
             log.error("获取sts token失败", e);
@@ -106,11 +87,12 @@ public class StsUtils {
     public String generatePresignedUrl(String objectName) {
         OSS ossClient = null;
         try {
+            AliyunProperties.Oss oss = aliyunProperties.getOss();
             StsTokenDTO ossStsToken = getOssStsToken();
-            ossClient = new OSSClientBuilder().build(ossEndpoint, ossStsToken.getAccessKeyId(), ossStsToken.getAccessKeySecret(), ossStsToken.getStsToken());
+            ossClient = new OSSClientBuilder().build(oss.getEndpoint(), ossStsToken.getAccessKeyId(), ossStsToken.getAccessKeySecret(), ossStsToken.getStsToken());
             Date expiration = new Date(new Date().getTime() + 3600 * 1000L);
             // 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
-            URL url = ossClient.generatePresignedUrl(bucketName, objectName, expiration);
+            URL url = ossClient.generatePresignedUrl(oss.getBucketName(), objectName, expiration);
             log.debug("生成签名 URL 成功, url: {}", url);
             return url.getPath();
         } catch (Exception e) {
