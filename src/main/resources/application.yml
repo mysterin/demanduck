@@ -26,6 +26,7 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+    continue-on-error: true
   redis:
     host: inner.wsl.com
     port: 6379
@@ -36,6 +37,7 @@ spring:
         max-idle: 10
         min-idle: 0
       timeout: 10000
+    connect-timeout: 3000
   jackson:
     default-property-inclusion: non_null
   mail:

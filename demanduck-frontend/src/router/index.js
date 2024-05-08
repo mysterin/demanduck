@@ -81,6 +81,14 @@ const routes = [
         meta: {
             notAuth: true
         }
+    }, {
+        path: '/term/association',
+        name: 'termAssociation',
+        component: () => import('../views/termAssociation'),
+        meta: {
+            // 不需要登录
+            notAuth: true
+        }
     }
 ]
 

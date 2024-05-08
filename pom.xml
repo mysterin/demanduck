@@ -27,6 +27,7 @@
         <hibernate.validator.annotation.version>5.4.3.Final</hibernate.validator.annotation.version>
         <com.aliyun.oss.aliyun-sdk-oss.version>3.15.1</com.aliyun.oss.aliyun-sdk-oss.version>
         <com.aliyun.aliyun-java-sdk-sts.version>3.1.2</com.aliyun.aliyun-java-sdk-sts.version>
+        <com.apache.poi.version>5.2.0</com.apache.poi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -109,7 +110,16 @@
             <artifactId>aliyun-java-sdk-sts</artifactId>
             <version>${com.aliyun.aliyun-java-sdk-sts.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${com.apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${com.apache.poi.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -104,6 +104,10 @@ const props = defineProps({
   maxSize: {
     type: Number,
     default: 500
+  },
+  scene: {
+    type: String,
+    default: 'default'
   }
 });
 
@@ -157,6 +161,7 @@ const fileList = computed({
         const formData = new FormData();
         formData.append('objectName', objectName);
         formData.append('file', file);
+        formData.append('scene', props.scene);
         return uploadFile(formData);
       }
     };

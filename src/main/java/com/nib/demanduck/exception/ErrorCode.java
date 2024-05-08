@@ -22,6 +22,7 @@ public enum ErrorCode {
     USER_PERMISSION_ERROR(1009, "用户无权限"),
     VALID_CODE_ERROR(1010, "验证码错误"),
     STS_TOKEN_ERROR(1011, "获取 sts token 失败"),
+    NOT_INIT_TERM_ASSOCIATION(1012, "词条关联未初始化"),
     ;
     private Integer code;
     private String msg;
