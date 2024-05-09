@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="8" :offset="2" style="margin-top: 30px">
       <nib-upload v-model:url="fileUrl" :file-types="['xlsx']" accept=".xlsx"
-                  :limit="1" scene="termAssociation"
+                  :limit="1" scene="termAssociation" :max-size="10240"
                   list-type="text" tips="只能上传 excel，第一列是词条，第二列是关联的词条">
       </nib-upload>
     </el-col>
