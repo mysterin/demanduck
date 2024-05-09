@@ -53,6 +53,7 @@ public class TermAssociationServiceImpl implements TermAssociationService {
             }
             termMap = map;
             file.delete();
+            log.info("初始化词条关联成功，关联数量={}", termMap.size());
         } catch (Exception e) {
             log.error("init term error", e);
         }
