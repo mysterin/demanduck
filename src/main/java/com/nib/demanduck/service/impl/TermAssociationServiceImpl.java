@@ -61,11 +61,13 @@ public class TermAssociationServiceImpl implements TermAssociationService {
     @Override
     public Set<String> findTerms(String searchKey) {
         if (termMap == null) {
+            log.error("词条关联未初始化，请上传 excel 文档，第一列是关键词，第二列是关联词条");
             throw new ServiceException(ErrorCode.NOT_INIT_TERM_ASSOCIATION);
         }
         // 精确匹配
         Set<String> set = termMap.get(searchKey);
         if (set != null) {
+            log.info("精确匹配成功，searchKey={}, 匹配数量={}", searchKey, set.size());
             return set;
         }
 
@@ -77,6 +79,7 @@ public class TermAssociationServiceImpl implements TermAssociationService {
                 set.addAll(termMap.get(key));
             }
         }
+        log.info("模糊匹配成功，searchKey={}, 匹配数量={}", searchKey, set.size());
         return set;
     }
 
