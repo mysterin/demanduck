@@ -1,19 +1,8 @@
 <template>
-  <el-upload
-      ref="upload"
-      action="#"
-      :before-upload="handleBeforeUpload"
-      :http-request="handleHttpRequest"
-      :on-exceed="handleFileExceed"
-      :file-list="fileList"
-      :accept="accept"
-      :name="fileName"
-      :limit="limit"
-      :list-type="listType"
-      :tips="tips"
-      :disabled="disabled"
-  >
-    <el-icon>
+  <el-upload class="avatar-uploader" ref="upload" action="#" :before-upload="handleBeforeUpload"
+             :http-request="handleHttpRequest" :on-exceed="handleFileExceed" :file-list="fileList" :accept="accept"
+             :name="fileName" :limit="limit" :list-type="listType" :tips="tips" :disabled="disabled">
+    <el-icon class="avatar-uploader-icon">
       <Plus/>
     </el-icon>
     <template #tip>
@@ -22,23 +11,31 @@
       </div>
     </template>
     <template #file="{ file }">
-      <div>
-        <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+      <div v-if="accept === 'image/*'">
+        <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         <span class="el-upload-list__item-actions">
-          <span
-              class="el-upload-list__item-preview"
-              @click="handlePictureCardPreview(file)"
-          >
-            <el-icon><zoom-in/></el-icon>
+          <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+            <el-icon><zoom-in /></el-icon>
           </span>
-          <span
-              v-if="!disabled"
-              class="el-upload-list__item-delete"
-              @click="handleRemove(file)"
-          >
-            <el-icon><Delete/></el-icon>
+          <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+            <el-icon>
+              <Delete />
+            </el-icon>
           </span>
         </span>
+      </div>
+      <div v-else>
+        <div class="file-item" style="display: inline-flex; align-items: center;">
+          <el-icon class="file-icon">
+            <document />
+          </el-icon>
+          <span class="file-name">{{ file.name }}</span>
+          <span v-if="!disabled" @click="handleRemove(file)">
+            <el-icon>
+              <delete />
+            </el-icon>
+          </span>
+        </div>
       </div>
     </template>
   </el-upload>
@@ -48,13 +45,14 @@
 </template>
 
 <script setup>
-import {ref, defineProps, defineEmits, computed} from "vue";
+import {ref, defineProps, defineEmits} from "vue";
 import {getOssStsToken} from "@/api/config";
 import OSS from "ali-oss";
 import {uuid} from "@/utils/random";
-import {getFileSuffix} from "@/utils/file";
+import {getFileSuffix, getFileNanme} from "@/utils/file";
 import {uploadFile} from "@/api/file";
-import { ElMessage } from "element-plus";
+import {ElMessage} from "element-plus";
+import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
 
 const upload = ref(null);
 const emit = defineEmits(['update:url']);
@@ -81,11 +79,11 @@ const props = defineProps({
   },
   listType: {
     type: String,
-    default: 'picture-card'
+    default: 'text'
   },
   tips: {
     type: String,
-    default: '只能上传jpg/png文件，且不超过500KB'
+    default: '只能上传 jpg/png 文件，且不超过 2MB'
   },
   disabled: {
     type: Boolean,
@@ -103,7 +101,7 @@ const props = defineProps({
   },
   maxSize: {
     type: Number,
-    default: 500
+    default: 2048
   },
   scene: {
     type: String,
@@ -113,25 +111,21 @@ const props = defineProps({
 
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
+const fileList = ref([]);
 
 let client;
 
-// fileList 计算
-const fileList = computed({
-  get() {
-    let list = [];
-    if (props.url) {
-      props.url.split(',').forEach(url => {
-        list.push({
-          url: url
-        })
-      });
-    }
-    return list;
-  }
-});
-
 (() => {
+  console.log(props.url);
+  if (props.url) {
+    props.url.split(',').map(url => {
+      fileList.value.push({
+        url: url,
+        name: getFileNanme(url)
+      });
+    });
+  }
+
   if (props.mode === 'oss') {
     // 阿里云上传
     getOssStsToken().then(res => {
@@ -190,9 +184,6 @@ const handleHttpRequest = function (options) {
       .put(objectName, file)
       .then((res) => {
         if (res && res.data && res.data.url) {
-          fileList.value.push({
-            url: res.data.url
-          });
           let url = fileList.value.map(item => item.url).join(',');
           emit('update:url', url);
         }
@@ -219,6 +210,4 @@ const handleRemove = file => {
 }
 
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>
