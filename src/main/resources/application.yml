@@ -20,6 +20,9 @@ server:
   port: 8045
   servlet:
     context-path: /
+  shutdown: graceful
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
 spring:
   datasource:
     url: jdbc:mysql://inner.wsl.com:3306/demanduck?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&&useSSL=false
