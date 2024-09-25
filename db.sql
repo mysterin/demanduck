@@ -197,6 +197,32 @@ CREATE TABLE `nib_mission` (
 
 -- No native definition for element: idx_end_time (index)
 
+-- nib_operate_record: table
+CREATE TABLE `nib_operate_record` (
+                                      `id` bigint(20) NOT NULL COMMENT '主键 ID',
+                                      `company_id` bigint(20) NOT NULL COMMENT '公司 ID',
+                                      `project_id` bigint(20) DEFAULT NULL COMMENT '项目 ID',
+                                      `business_id` bigint(20) NOT NULL COMMENT '业务记录 ID',
+                                      `type` enum('DEMAND','MISSION','FLAW') COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '业务类型, DEMAND=需求, MISSION=任务, FLAW=缺陷',
+                                      `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
+                                      `content` varchar(1024) COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作内容',
+                                      `deleted` tinyint(1) DEFAULT NULL COMMENT '是否删除，0=未删除，1=已删除',
+                                      `create_user` bigint(20) DEFAULT NULL COMMENT '创建人',
+                                      `update_user` bigint(20) DEFAULT NULL COMMENT '更新人',
+                                      `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                      `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+                                      PRIMARY KEY (`id`),
+                                      KEY `idx_business_id` (`business_id`),
+                                      KEY `idx_company_id` (`company_id`),
+                                      KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='操作记录表';
+
+-- No native definition for element: idx_company_id (index)
+
+-- No native definition for element: idx_business_id (index)
+
+-- No native definition for element: idx_user_id (index)
+
 -- nib_project: table
 CREATE TABLE `nib_project` (
                                `id` bigint(20) NOT NULL COMMENT '主键 ID',

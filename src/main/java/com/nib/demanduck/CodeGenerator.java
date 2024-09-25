@@ -45,7 +45,8 @@ public class CodeGenerator {
 //                                    "nib_mission",
 //                                    "nib_project",
 //                                    "nib_user",
-                                    "nib_role"
+//                                    "nib_role",
+                                    "nib_operate_record"
                             )
                             // 前缀
                             .addTablePrefix("nib_")
