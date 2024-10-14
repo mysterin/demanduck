@@ -29,6 +29,7 @@
         <com.aliyun.aliyun-java-sdk-sts.version>3.1.2</com.aliyun.aliyun-java-sdk-sts.version>
         <com.apache.poi.version>5.2.0</com.apache.poi.version>
         <guava.version>18.0</guava.version>
+        <hutool.version>5.3.9</hutool.version>
     </properties>
     <dependencies>
         <dependency>
@@ -125,6 +126,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
     </dependencies>
 
